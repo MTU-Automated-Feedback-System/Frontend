@@ -1,9 +1,8 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import "./App.css";
 import Dashboard from "./Components/Dashboard";
-
 
 /*
 TODO:
@@ -11,13 +10,13 @@ TODO:
  */
 
 const App = () => {
-
   return (
-    <Router>
-        <Switch>
-            <Route exact path="/" component={Dashboard} />
-        </Switch>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Dashboard/>} />
+
+      </Routes>
+    </BrowserRouter>
   );
 };
 
