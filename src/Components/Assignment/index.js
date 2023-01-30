@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CodeEditorWindow from "./CodeEditorWindow";
+import CodeEditor from "./CodeEditor";
 import axios from "axios";
 import { classnames } from "../utils/general";
 import { languageOptions } from "../constants/languageOptions";
@@ -116,7 +116,7 @@ const Landing = () => {
       </div>
       <div className="flex flex-row space-x-4 items-start px-4 py-4">
         <div className="flex flex-col w-full h-full justify-start items-end">
-          <CodeEditorWindow
+          <CodeEditor
             code={code}
             onChange={onChange}
             language={language?.value}
