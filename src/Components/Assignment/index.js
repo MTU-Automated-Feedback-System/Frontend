@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import CodeEditor from "./CodeEditor";
-import axios from "axios";
-import { classnames } from "../utils/general";
-import { languageOptions } from "../constants/languageOptions";
+// import axios from "axios";
+import { classnames } from "../../Utils/general";
+import { languageOptions } from "../../Constants/languageOptions";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { defineTheme } from "../lib/defineTheme";
-import useKeyPress from "../hooks/useKeyPress";
-import Footer from "./Footer";
+import { defineTheme } from "../../Lib/defineTheme";
+import useKeyPress from "../../Hooks/useKeyPress";
+import Footer from "../Footer";
 import OutputWindow from "./OutputWindow";
 import CustomInput from "./CustomInput";
 import OutputDetails from "./OutputDetails";
 import ThemeDropdown from "./ThemeDropdown";
-import LanguagesDropdown from "./LanguagesDropdown";
+import LanguagesDropdown from "./LanguageDropDown";
 
 const javascriptDefault = `// some comment`;
 
