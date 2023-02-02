@@ -13,8 +13,7 @@ import Footer from "../Footer";
 import OutputWindow from "./OutputWindow";
 import CustomInput from "./CustomInput";
 import OutputDetails from "./OutputDetails";
-import ThemeDropdown from "./ThemeDropdown";
-// Dummy comment
+// import ThemeDropdown from "./ThemeDropdown";
 import LanguagesDropdown from "./LanguageDropDown";
 
 const javascriptDefault = `// some comment`;
@@ -112,7 +111,7 @@ const Landing = () => {
           <LanguagesDropdown onSelectChange={onSelectChange} />
         </div>
         <div className="px-4 py-2">
-          <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
+          {/* <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} /> */}
         </div>
       </div>
       <div className="flex flex-row space-x-4 items-start px-4 py-4">
