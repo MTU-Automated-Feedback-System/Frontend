@@ -15,7 +15,7 @@ import OutputWindow from "./OutputWindow";
 import CustomInput from "./CustomInput";
 import OutputDetails from "./OutputDetails";
 import ThemeDropdown from "./ThemeDropdown";
-import LanguageDropdown from "./LanguageDropdow";
+import LanguageDropdown from "./LanguageDropdown";
 
 const javascriptDefault = `// some comment`;
 
