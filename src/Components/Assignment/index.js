@@ -42,6 +42,7 @@ const Landing = () => {
       handleCompile();
     }
   }, [ctrlPress, enterPress]);
+
   const onChange = (action, data) => {
     switch (action) {
       case "code": {
@@ -64,22 +65,21 @@ const Landing = () => {
     };
     const options = {
       method: "POST",
-      url: process.env.REACT_APP_RAPID_API_URL,
+      url: process.env.REACT_APP_API_URL + "/assignment",
       params: { base64_encoded: "true", fields: "*" },
       headers: {
         "content-type": "application/json",
         "Content-Type": "application/json",
-        "X-RapidAPI-Host": process.env.REACT_APP_RAPID_API_HOST,
-        "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
       },
       data: formData,
     };
+    console.log(options);
     axios
       .request(options)
       .then(function (response) {
         console.log("res.data", response.data);
-        const token = response.data.token;
-        checkStatus(token);
+        const id = response.data.id;
+        checkStatus(id);
       })
       .catch((err) => {
         let error = err.response ? err.response.data : err;
@@ -99,34 +99,34 @@ const Landing = () => {
       });
   };
 
-  const checkStatus = async (token) => {
+  const checkStatus = async (id) => {
     const options = {
       method: "GET",
-      url: process.env.REACT_APP_RAPID_API_URL + "/" + token,
+      url: process.env.REACT_APP_API_URL + "/assignment/" + id,
       params: { base64_encoded: "true", fields: "*" },
-      headers: {
-        "X-RapidAPI-Host": process.env.REACT_APP_RAPID_API_HOST,
-        "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
-      },
     };
     try {
       let response = await axios.request(options);
-      let statusId = response.data.status?.id;
-
+      // let statusId = response.data.status?.id;
+      setProcessing(false);
+      // setOutputDetails(response.data);
+      showSuccessToast(`Compiled Successfully!`);
+      console.log("response.data", response.data);
+      return;
       // Processed - we have a result
-      if (statusId === 1 || statusId === 2) {
-        // still processing
-        setTimeout(() => {
-          checkStatus(token);
-        }, 2000);
-        return;
-      } else {
-        setProcessing(false);
-        setOutputDetails(response.data);
-        showSuccessToast(`Compiled Successfully!`);
-        console.log("response.data", response.data);
-        return;
-      }
+      // if (statusId === 1 || statusId === 2) {
+      //   // still processing
+      //   setTimeout(() => {
+      //     checkStatus(id);
+      //   }, 2000);
+      //   return;
+      // } else {
+      //   setProcessing(false);
+      //   setOutputDetails(response.data);
+      //   showSuccessToast(`Compiled Successfully!`);
+      //   console.log("response.data", response.data);
+      //   return;
+      // }
     } catch (err) {
       console.log("err", err);
       setProcessing(false);
