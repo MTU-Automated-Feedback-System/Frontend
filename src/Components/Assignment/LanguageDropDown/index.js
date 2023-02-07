@@ -5,7 +5,7 @@ import Select from "react-select";
 import { customStyles } from "../../../Constants/customStyles";
 import { languageOptions } from "../../../Constants/languageOptions";
 
-const LanguagesDropdown = ({ onSelectChange }) => {
+const LanguageDropdown = ({ onSelectChange }) => {
   return (
     <Select
       placeholder={`Filter By Category`}
@@ -17,4 +17,4 @@ const LanguagesDropdown = ({ onSelectChange }) => {
   );
 };
 
-export default LanguagesDropdown;
+export default LanguageDropdown;
