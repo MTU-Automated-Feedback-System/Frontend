@@ -68,6 +68,7 @@ const Landing = () => {
       url: process.env.REACT_APP_API_URL + "/assignment",
       params: { base64_encoded: "true", fields: "*" },
       headers: {
+        "Access-Control-Allow-Origin": "https://afs.romainclemencon.com/",
         "content-type": "application/json",
         "Content-Type": "application/json",
       },
