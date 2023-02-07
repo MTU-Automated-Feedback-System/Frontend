@@ -14,7 +14,7 @@ import Footer from "../Footer";
 import OutputWindow from "./OutputWindow";
 import CustomInput from "./CustomInput";
 import OutputDetails from "./OutputDetails";
-import ThemeDropdown from "./ThemeDropdown";
+import ThemeDropdown from "../Assignment/ThemeDropdown";
 import LanguagesDropdown from "./LanguageDropDown";
 
 const javascriptDefault = `// some comment`;
