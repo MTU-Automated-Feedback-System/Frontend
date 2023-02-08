@@ -68,9 +68,6 @@ const Landing = () => {
       url: process.env.REACT_APP_API_URL + "/assignment",
       params: { base64_encoded: "true", fields: "*" },
       headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": 'POST,GET,OPTIONS',
-        "content-type": "application/json",
         "Content-Type": "application/json",
       },
       data: formData,
