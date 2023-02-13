@@ -58,6 +58,8 @@ const Landing = () => {
   const handleCompile = () => {
     setProcessing(true);
     const formData = {
+      AssignmentId: 1, // Future set dynamically to the assigment 
+      StudentId: 1, // Same as assignment id 
       language_id: language.id,
       // encode source code in base64
       source_code: Buffer.from(code).toString("base64"),
@@ -65,7 +67,7 @@ const Landing = () => {
     };
     const options = {
       method: "POST",
-      url: process.env.REACT_APP_API_URL + "/assignment",
+      url: process.env.REACT_APP_API_URL + "/submission",
       params: { base64_encoded: "true", fields: "*" },
       headers: {
         "Content-Type": "application/json",
@@ -81,6 +83,7 @@ const Landing = () => {
         checkStatus(id);
       })
       .catch((err) => {
+        console.log(err)
         let error = err.response ? err.response.data : err;
         // get error status
         let status = err.response.status;
@@ -101,7 +104,7 @@ const Landing = () => {
   const checkStatus = async (id) => {
     const options = {
       method: "GET",
-      url: process.env.REACT_APP_API_URL + "/assignment/" + id,
+      url: process.env.REACT_APP_API_URL + "/submission/" + id,
       params: { base64_encoded: "true", fields: "*" },
     };
     try {
