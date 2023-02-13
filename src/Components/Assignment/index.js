@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Buffer } from "buffer";
 import { defineTheme } from "../../Lib/defineTheme";
 import useKeyPress from "../../Hooks/useKeyPress";
-import Footer from "../Footer";
+import Footer from "../../Containers/Footer";
 import OutputWindow from "./OutputWindow";
 import CustomInput from "./CustomInput";
 import OutputDetails from "./OutputDetails";
@@ -58,8 +58,8 @@ const Landing = () => {
   const handleCompile = () => {
     setProcessing(true);
     const formData = {
-      AssignmentId: 1, // Future set dynamically to the assigment 
-      StudentId: 1, // Same as assignment id 
+      AssignmentId: "placeholder", // Future set dynamically to the assigment 
+      StudentId: "placeholder", // Same as assignment id 
       language_id: language.id,
       // encode source code in base64
       source_code: Buffer.from(code).toString("base64"),
@@ -104,10 +104,14 @@ const Landing = () => {
   const checkStatus = async (id) => {
     const options = {
       method: "GET",
-      url: process.env.REACT_APP_API_URL + "/submission/" + id,
-      params: { base64_encoded: "true", fields: "*" },
+      url: process.env.REACT_APP_API_URL + "/submission/i/",
+      params: {
+        SubmissionId: id,
+        AssignmentId: "placeholder", // Future set dynamically to the assigment 
+      }
     };
     try {
+      console.log(options)
       let response = await axios.request(options);
       // let statusId = response.data.status?.id;
       setProcessing(false);
