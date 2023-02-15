@@ -1,5 +1,5 @@
 import React from "react";
-import { classnames } from "../../../Utils/general";
+import { classnames } from "../../Utils/general";
 
 const CustomInput = ({ customInput, setCustomInput }) => {
   return (

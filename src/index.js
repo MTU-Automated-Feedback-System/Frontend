@@ -6,12 +6,17 @@ import ReactDOM from "react-dom/client";
 
 import "./index.css";
 import App from "./App";
+import Footer from "./Containers/Footer";
 // import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <>
+   <React.StrictMode>
     <App />
   </React.StrictMode>
+  <Footer/>
+  </>
+ 
 );
 
 // If you want to start measuring performance in your app, pass a function

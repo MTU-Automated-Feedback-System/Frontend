@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CodeEditor from "./CodeEditor";
+import CodeEditor from "./codeEditor";
 import axios from "axios";
 import { classnames } from "../../Utils/general";
 import { languageOptions } from "../../Constants/languageOptions";
@@ -10,13 +10,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { Buffer } from "buffer";
 import { defineTheme } from "../../Lib/defineTheme";
 import useKeyPress from "../../Hooks/useKeyPress";
-import Footer from "../../Containers/Footer";
-import OutputWindow from "./OutputWindow";
-import CustomInput from "./CustomInput";
-import OutputDetails from "./OutputDetails";
-import ThemeDropdown from "./ThemeDropdown";
-import LanguageDropdown from "./LanguageDropdown";
-import Header from '../../Containers/Header';
+import OutputWindow from "./outputWindow";
+import CustomInput from "./customInput";
+import OutputDetails from "./outputDetails";
+import ThemeDropdown from "./themeDropDown";
+import LanguageDropdown from "./languageDropdown";
 
 const javascriptDefault = `// some comment`;
 
@@ -184,7 +182,6 @@ const Landing = () => {
 
   return (
     <>
-      <Header/>
       <ToastContainer
         position="top-right"
         autoClose={2000}
@@ -235,7 +232,7 @@ const Landing = () => {
           {outputDetails && <OutputDetails outputDetails={outputDetails} />}
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
