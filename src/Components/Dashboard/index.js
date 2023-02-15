@@ -1,8 +1,10 @@
 import logo from '../../logo.svg';
 import Footer from '../../Containers/Footer';
+import Header from '../../Containers/Header';
 const Dashboard = () => {
   return (
     <>
+    <Header/>
     <div className="App">
     <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />

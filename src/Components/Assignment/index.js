@@ -16,6 +16,7 @@ import CustomInput from "./CustomInput";
 import OutputDetails from "./OutputDetails";
 import ThemeDropdown from "./ThemeDropdown";
 import LanguageDropdown from "./LanguageDropdown";
+import Header from '../../Containers/Header';
 
 const javascriptDefault = `// some comment`;
 
@@ -183,6 +184,7 @@ const Landing = () => {
 
   return (
     <>
+      <Header/>
       <ToastContainer
         position="top-right"
         autoClose={2000}
