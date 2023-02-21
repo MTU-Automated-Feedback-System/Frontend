@@ -201,7 +201,10 @@ const Landing = () => {
           <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
         </div>
       </div>
+
+
       <div className="flex flex-row items-start space-x-4 px-4 py-4">
+        
         <div className="flex h-full w-full flex-col items-end justify-start">
           <CodeEditor
             code={code}
@@ -232,7 +235,6 @@ const Landing = () => {
           {outputDetails && <OutputDetails outputDetails={outputDetails} />}
         </div>
       </div>
-      {/* <Footer /> */}
     </>
   );
 };
