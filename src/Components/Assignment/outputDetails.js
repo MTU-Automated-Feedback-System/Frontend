@@ -1,9 +1,10 @@
 import React from "react";
 
+
 const OutputDetails = ({ outputDetails }) => {
   return (
     <div className="metrics-container mt-4 flex flex-col space-y-3">
-      <p className="text-sm">
+      {/* <p className="text-sm">
         Status:{" "}
         <span className="font-semibold px-2 py-1 rounded-md bg-gray-100">
           {outputDetails?.status?.description}
@@ -19,6 +20,18 @@ const OutputDetails = ({ outputDetails }) => {
         Time:{" "}
         <span className="font-semibold px-2 py-1 rounded-md bg-gray-100">
           {outputDetails?.time}
+        </span>
+      </p> */}
+      <p className="text-sm">
+        Status:{" "}
+        <span className="font-semibold px-2 py-1 rounded-md bg-gray-100">
+          {outputDetails?.submission?.Item?.compiled_status}
+        </span>
+      </p>
+      <p className="text-sm">
+        Output:{" "}
+        <span className="font-semibold px-2 py-1 rounded-md bg-gray-100">
+          {outputDetails?.submission?.Item?.compiled_output}
         </span>
       </p>
     </div>

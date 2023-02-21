@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CodeEditor from "./CodeEditor";
+import CodeEditor from "./codeEditor";
 import axios from "axios";
 import { classnames } from "../../Utils/general";
 import { languageOptions } from "../../Constants/languageOptions";
@@ -10,17 +10,16 @@ import "react-toastify/dist/ReactToastify.css";
 import { Buffer } from "buffer";
 import { defineTheme } from "../../Lib/defineTheme";
 import useKeyPress from "../../Hooks/useKeyPress";
-import Footer from "../../Containers/Footer";
-import OutputWindow from "./OutputWindow";
-import CustomInput from "./CustomInput";
-import OutputDetails from "./OutputDetails";
-import ThemeDropdown from "./ThemeDropdown";
-import LanguageDropdown from "./LanguageDropdown";
+import OutputWindow from "./outputWindow";
+import CustomInput from "./customInput";
+import OutputDetails from "./outputDetails";
+import ThemeDropdown from "./themeDropDown";
+import LanguageDropdown from "./languageDropdown";
 
-const javascriptDefault = `// some comment`;
+const pythonDefault = `# some comment\nprint("test")`;
 
 const Landing = () => {
-  const [code, setCode] = useState(javascriptDefault);
+  const [code, setCode] = useState(pythonDefault);
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
@@ -113,9 +112,9 @@ const Landing = () => {
     try {
       console.log(options)
       let response = await axios.request(options);
-      // let statusId = response.data.status?.id;
+      // let statusId = response.data.status?.id;  
       setProcessing(false);
-      // setOutputDetails(response.data);
+      setOutputDetails(response.data);
       showSuccessToast(`Compiled Successfully!`);
       console.log("response.data", response.data);
       return;
@@ -202,7 +201,10 @@ const Landing = () => {
           <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
         </div>
       </div>
+
+
       <div className="flex flex-row items-start space-x-4 px-4 py-4">
+        
         <div className="flex h-full w-full flex-col items-end justify-start">
           <CodeEditor
             code={code}
@@ -233,7 +235,6 @@ const Landing = () => {
           {outputDetails && <OutputDetails outputDetails={outputDetails} />}
         </div>
       </div>
-      <Footer />
     </>
   );
 };
