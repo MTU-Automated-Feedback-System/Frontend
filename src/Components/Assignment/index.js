@@ -16,10 +16,10 @@ import OutputDetails from "./outputDetails";
 import ThemeDropdown from "./themeDropDown";
 import LanguageDropdown from "./languageDropdown";
 
-const javascriptDefault = `// some comment`;
+const pythonDefault = `# some comment\nprint("test")`;
 
 const Landing = () => {
-  const [code, setCode] = useState(javascriptDefault);
+  const [code, setCode] = useState(pythonDefault);
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
@@ -112,9 +112,9 @@ const Landing = () => {
     try {
       console.log(options)
       let response = await axios.request(options);
-      // let statusId = response.data.status?.id;
+      // let statusId = response.data.status?.id;  
       setProcessing(false);
-      // setOutputDetails(response.data);
+      setOutputDetails(response.data);
       showSuccessToast(`Compiled Successfully!`);
       console.log("response.data", response.data);
       return;
