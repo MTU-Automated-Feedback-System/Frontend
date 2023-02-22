@@ -18,6 +18,8 @@ import LanguageDropdown from "./languageDropdown";
 
 const pythonDefault = `# some comment\nprint("test")`;
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const Landing = () => {
   const [code, setCode] = useState(pythonDefault);
   const [customInput, setCustomInput] = useState("");
@@ -66,7 +68,7 @@ const Landing = () => {
     };
     const options = {
       method: "POST",
-      url: process.env.REACT_APP_API_URL + "/submission",
+      url:  apiUrl + "/submission",
       params: { base64_encoded: "true", fields: "*" },
       headers: {
         "Content-Type": "application/json",
@@ -103,7 +105,7 @@ const Landing = () => {
   const checkStatus = async (id) => {
     const options = {
       method: "GET",
-      url: process.env.REACT_APP_API_URL + "/submission/i/",
+      url: apiUrl + "/submission/i/",
       params: {
         SubmissionId: id,
         AssignmentId: "placeholder", // Future set dynamically to the assigment 
