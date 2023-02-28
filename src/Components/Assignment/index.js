@@ -81,6 +81,7 @@ const Landing = () => {
       .then(function (response) {
         console.log("res.data", response.data);
         const id = response.data.id;
+        console.log(`submission id = ${id}`)
         checkStatus(id);
       })
       .catch((err) => {
