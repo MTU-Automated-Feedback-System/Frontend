@@ -115,26 +115,22 @@ const Landing = () => {
     try {
       console.log(options)
       let response = await axios.request(options);
-      // let statusId = response.data.status?.id;  
-      setProcessing(false);
-      setOutputDetails(response.data);
-      showSuccessToast(`Compiled Successfully!`);
-      console.log("response.data", response.data);
-      return;
+      let status = response.data.submission?.Item?.compiled_status;  
+
       // Processed - we have a result
-      // if (statusId === 1 || statusId === 2) {
-      //   // still processing
-      //   setTimeout(() => {
-      //     checkStatus(id);
-      //   }, 2000);
-      //   return;
-      // } else {
-      //   setProcessing(false);
-      //   setOutputDetails(response.data);
-      //   showSuccessToast(`Compiled Successfully!`);
-      //   console.log("response.data", response.data);
-      //   return;
-      // }
+      if (status === "processing") {
+        // still processing
+        setTimeout(() => {
+          checkStatus(id);
+        }, 2000);
+        return;
+      } else {
+        setProcessing(false);
+        setOutputDetails(response.data);
+        showSuccessToast(`Compiled Successfully!`);
+        console.log("response.data", response.data);
+        return;
+      }
     } catch (err) {
       console.log("err", err);
       setProcessing(false);
