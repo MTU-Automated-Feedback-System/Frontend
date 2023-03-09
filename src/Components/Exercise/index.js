@@ -59,8 +59,8 @@ const Landing = () => {
   const handleCompile = () => {
     setProcessing(true);
     const formData = {
-      assignment_id: "placeholder", // Future set dynamically to the assigment 
-      student_id: "placeholder", // Same as assignment id 
+      exercise_id: "placeholder", // Future set dynamically to the assigment 
+      student_id: "placeholder", // Same as exercise id 
       language_id: language.id,
       // encode source code in base64
       source_code: Buffer.from(code).toString("base64"),
@@ -109,7 +109,7 @@ const Landing = () => {
       url: apiUrl + "/submission/i/",
       params: {
         submission_id: id,
-        assignment_id: "placeholder", // Future set dynamically to the assigment 
+        exercise_id: "placeholder", // Future set dynamically to the assigment 
       }
     };
     try {
