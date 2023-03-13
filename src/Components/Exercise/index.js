@@ -15,9 +15,9 @@ import CustomInput from "./customInput";
 import OutputDetails from "./outputDetails";
 import ThemeDropdown from "./themeDropDown";
 import LanguageDropdown from "./languageDropdown";
+import Tabs from "./description";
 
 const pythonDefault = `# some comment\nprint("test")`;
-
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const Landing = () => {
@@ -27,6 +27,9 @@ const Landing = () => {
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("cobalt");
   const [language, setLanguage] = useState(languageOptions[0]);
+
+  const description = require("./sample_exercise.json");
+  const submissions = ["woof"];
 
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
@@ -59,8 +62,8 @@ const Landing = () => {
   const handleCompile = () => {
     setProcessing(true);
     const formData = {
-      exercise_id: "placeholder", // Future set dynamically to the assigment 
-      student_id: "placeholder", // Same as exercise id 
+      exercise_id: "placeholder", // Future set dynamically to the assigment
+      student_id: "placeholder", // Same as exercise id
       language_id: language.id,
       // encode source code in base64
       source_code: Buffer.from(code).toString("base64"),
@@ -68,7 +71,7 @@ const Landing = () => {
     };
     const options = {
       method: "POST",
-      url:  apiUrl + "/submission",
+      url: apiUrl + "/submission",
       params: { base64_encoded: "true", fields: "*" },
       headers: {
         "Content-Type": "application/json",
@@ -81,11 +84,11 @@ const Landing = () => {
       .then(function (response) {
         console.log("res.data", response.data);
         const id = response.data.id;
-        console.log(`submission id = ${id}`)
+        console.log(`submission id = ${id}`);
         checkStatus(id);
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         let error = err.response ? err.response.data : err;
         // get error status
         let status = err.response.status;
@@ -109,13 +112,13 @@ const Landing = () => {
       url: apiUrl + "/submission/i/",
       params: {
         submission_id: id,
-        exercise_id: "placeholder", // Future set dynamically to the assigment 
-      }
+        exercise_id: "placeholder", // Future set dynamically to the assigment
+      },
     };
     try {
-      console.log(options)
+      console.log(options);
       let response = await axios.request(options);
-      let status = response.data.submission?.Item?.compiled_status;  
+      let status = response.data.submission?.Item?.compiled_status;
 
       // Processed - we have a result
       if (status === "processing") {
@@ -180,7 +183,8 @@ const Landing = () => {
   };
 
   return (
-    <>
+    <div className="flex w-full flex-grow px-1">
+      <Tabs description={description.descritption} submissions={submissions} />
       <ToastContainer
         position="top-right"
         autoClose={2000}
@@ -192,19 +196,8 @@ const Landing = () => {
         draggable
         pauseOnHover
       />
-      <div className="flex flex-row">
-        <div className="px-4 py-2">
-          <LanguageDropdown onSelectChange={onSelectChange} />
-        </div>
-        <div className="px-4 py-2">
-          <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
-        </div>
-      </div>
-
-
-      <div className="flex flex-row items-start space-x-4 px-4 py-4">
-        
-        <div className="flex h-full w-full flex-col items-end justify-start">
+      <div className="flex w-full flex-col pl-2">
+        <div className="w-full grow items-end justify-start">
           <CodeEditor
             code={code}
             onChange={onChange}
@@ -213,9 +206,12 @@ const Landing = () => {
           />
         </div>
 
-        <div className="right-container flex w-[30%] flex-shrink-0 flex-col">
+        <div className="flex flex-row">
           <OutputWindow outputDetails={outputDetails} />
-          <div className="flex flex-col items-end">
+          <div className="">
+            <h1 className="mb-2 bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-xl font-bold text-transparent">
+              Input
+            </h1>
             <CustomInput
               customInput={customInput}
               setCustomInput={setCustomInput}
@@ -234,7 +230,7 @@ const Landing = () => {
           {outputDetails && <OutputDetails outputDetails={outputDetails} />}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default Landing;
