@@ -183,21 +183,15 @@ const Landing = () => {
   };
 
   return (
-    <div className="flex w-full flex-grow px-1">
-      <Tabs description={description.descritption} submissions={submissions} />
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      <div className="flex w-full flex-col pl-2">
-        <div className="w-full grow items-end justify-start">
+    <div className="flex h-full w-full px-1">
+      <div className="w-1/4 px-2">
+        <Tabs
+          description={description.descritption}
+          submissions={submissions}
+        />
+      </div>
+      <div className="flex flex-col pl-2 h-full w-3/4">
+        <div className="h-3/5">
           <CodeEditor
             code={code}
             onChange={onChange}
@@ -206,7 +200,7 @@ const Landing = () => {
           />
         </div>
 
-        <div className="flex flex-row">
+        <div className="flex flex-row h-2/5">
           <OutputWindow outputDetails={outputDetails} />
           <div className="">
             <h1 className="mb-2 bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-xl font-bold text-transparent">
@@ -229,6 +223,19 @@ const Landing = () => {
           </div>
           {outputDetails && <OutputDetails outputDetails={outputDetails} />}
         </div>
+
+        <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+
       </div>
     </div>
   );

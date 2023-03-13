@@ -4,7 +4,7 @@ import chess from "../../Assets/chess.png";
 
 const Nav = () => {
   return (
-    <nav className="relative flex w-full shrink-0 flex-row items-center p-3 text-gray-600">
+    <nav className="flex w-full shrink-0 flex-row items-center p-3 text-gray-600">
       <Link
         className="title-font mb-4 flex items-center font-medium text-gray-900 md:mb-0"
         to={"/"}

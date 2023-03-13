@@ -12,7 +12,7 @@ const Description = ({ description, submissions }) => {
   });
 
   return (
-    <div className="w-full max-w-md px-2 sm:px-0">
+    
       <Tab.Group>
         <Tab.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
           {Object.keys(categories).map((category) => (
@@ -51,7 +51,6 @@ const Description = ({ description, submissions }) => {
           <Tab.Panel>List of submissions</Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
-    </div>
   );
 };
 
