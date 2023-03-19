@@ -15,7 +15,7 @@ const CodeEditor = ({ onChange, language, code, theme }) => {
       <Editor
         language={language || "javascript"}
         value={value}
-        theme={theme}
+        theme={theme || "oceanic-next"}
         defaultValue="// default editor"
         onChange={handleEditorChange}
       />

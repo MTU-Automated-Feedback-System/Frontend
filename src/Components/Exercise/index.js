@@ -13,8 +13,6 @@ import useKeyPress from "../../Hooks/useKeyPress";
 import OutputWindow from "./outputWindow";
 import CustomInput from "./customInput";
 import OutputDetails from "./outputDetails";
-import ThemeDropdown from "./themeDropDown";
-import LanguageDropdown from "./languageDropdown";
 import Tabs from "./description";
 
 const pythonDefault = `# some comment\nprint("test")`;
@@ -25,19 +23,13 @@ const Landing = () => {
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
-  const [theme, setTheme] = useState("cobalt");
+  const [theme, setTheme] = useState("vs-dark");
   const [language, setLanguage] = useState(languageOptions[0]);
 
   const description = require("./sample_exercise.json");
   const submissions = ["woof"];
-
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
-
-  const onSelectChange = (sl) => {
-    console.log("selected Option...", sl);
-    setLanguage(sl);
-  };
 
   useEffect(() => {
     if (enterPress && ctrlPress) {
@@ -141,17 +133,6 @@ const Landing = () => {
     }
   };
 
-  const handleThemeChange = (th) => {
-    const theme = th;
-    console.log("theme...", theme);
-
-    if (["light", "vs-dark"].includes(theme.value)) {
-      setTheme(theme);
-    } else {
-      defineTheme(theme.value).then((_) => setTheme(theme));
-    }
-  };
-
   useEffect(() => {
     defineTheme("oceanic-next").then((_) =>
       setTheme({ value: "oceanic-next", label: "Oceanic Next" })
@@ -186,11 +167,11 @@ const Landing = () => {
     <div className="flex h-full w-full px-1">
       <div className="w-1/4 px-2">
         <Tabs
-          description={description.descritption}
+          description={description.description}
           submissions={submissions}
         />
       </div>
-      <div className="flex flex-col pl-2 h-full w-3/4">
+      <div className="flex h-full w-3/4 flex-col pl-2">
         <div className="h-3/5">
           <CodeEditor
             code={code}
@@ -200,7 +181,7 @@ const Landing = () => {
           />
         </div>
 
-        <div className="flex flex-row h-2/5">
+        <div className="flex h-2/5 flex-row">
           <OutputWindow outputDetails={outputDetails} />
           <div className="">
             <h1 className="mb-2 bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-xl font-bold text-transparent">
@@ -220,22 +201,21 @@ const Landing = () => {
             >
               {processing ? "Processing..." : "Compile and Execute"}
             </button>
+            {outputDetails && <OutputDetails outputDetails={outputDetails} />}
           </div>
-          {outputDetails && <OutputDetails outputDetails={outputDetails} />}
         </div>
 
         <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </div>
     </div>
   );

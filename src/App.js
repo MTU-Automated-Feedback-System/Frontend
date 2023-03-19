@@ -14,9 +14,9 @@ const App = () => {
     <BrowserRouter>
       <Nav />
       <Routes>
-        <Route element={<Nav />} />
         <Route path="/" element={<Dashboard />} />
         <Route path="/exercise" element={<Exercise />} />
+        <Route path="/exercise/:id" element={<Exercise />} />
       </Routes>
     </BrowserRouter>
   );

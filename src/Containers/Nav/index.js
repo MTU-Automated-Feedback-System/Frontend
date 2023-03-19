@@ -18,8 +18,8 @@ const Nav = () => {
         <span className="ml-3 text-xl">AFS</span>
       </Link>
       <div className="flex flex-wrap items-center justify-center text-base font-medium md:mr-auto md:ml-4 md:border-l md:border-gray-400 md:py-1 md:pl-4">
-        <NavLink className="mr-5 hover:text-gray-900" to="Exercise">
-          Exercise
+        <NavLink className="mr-5 hover:text-gray-900" to="exercise">
+          Exercises
         </NavLink>
         <NavLink
           className="mr-5 hover:text-gray-900"
