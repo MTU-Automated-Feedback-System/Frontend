@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import CodeEditor from "./codeEditor";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { classnames } from "../../Utils/general";
 import { languageOptions } from "../../Constants/languageOptions";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { Buffer } from "buffer";
 import { defineTheme } from "../../Lib/defineTheme";
+import CodeEditor from "./codeEditor";
 import useKeyPress from "../../Hooks/useKeyPress";
 import OutputWindow from "./outputWindow";
 import CustomInput from "./customInput";
@@ -16,15 +15,18 @@ import OutputDetails from "./outputDetails";
 import Tabs from "./description";
 
 const pythonDefault = `# some comment\nprint("test")`;
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = process.env.REACT_APP_API_URL_TEST;
 
-const Landing = () => {
+const Exercise = () => {
+  const {id} = useParams();
+  const [data, setData] = useState();
   const [code, setCode] = useState(pythonDefault);
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("vs-dark");
   const [language, setLanguage] = useState(languageOptions[0]);
+  const [loading, setLoading] = useState(true);
 
   const description = require("./sample_exercise.json");
   const submissions = ["woof"];
@@ -133,12 +135,6 @@ const Landing = () => {
     }
   };
 
-  useEffect(() => {
-    defineTheme("oceanic-next").then((_) =>
-      setTheme({ value: "oceanic-next", label: "Oceanic Next" })
-    );
-  }, []);
-
   const showSuccessToast = (msg) => {
     toast.success(msg || `Compiled Successfully!`, {
       position: "top-right",
@@ -162,14 +158,32 @@ const Landing = () => {
       progress: undefined,
     });
   };
+  
+  const getData = async () => {
+    try {
+      const response = await axios.get(apiUrl + "/exercise/"+ id);
+      setData(response.data.exercises);
+      setLoading(false);
+    } catch (err) {
+      console.log("error geting exercises" + err);
+      setData(null);
+    }
+  };
+
+  useEffect(() => {
+    defineTheme("oceanic-next").then((_) =>
+      setTheme({ value: "oceanic-next", label: "Oceanic Next" })
+    );
+  }, []);
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <div className="flex h-full w-full px-1">
       <div className="w-1/4 px-2">
-        <Tabs
-          description={description.description}
-          submissions={submissions}
-        />
+        <Tabs description={description.description} submissions={submissions} />
       </div>
       <div className="flex h-full w-3/4 flex-col pl-2">
         <div className="h-3/5">
@@ -220,4 +234,4 @@ const Landing = () => {
     </div>
   );
 };
-export default Landing;
+export default Exercise;

@@ -32,8 +32,8 @@ const Description = ({ description, submissions }) => {
             </Tab>
           ))}
         </Tab.List>
-        <Tab.Panels className="mt-2">
-          <Tab.Panel>
+        <Tab.Panels className="mt-2 space-x-1 rounded-xl bg-blue-800/10 p-1 font-mono">
+          <Tab.Panel >
             <h1>{description.title}</h1>
             <p>{description.description}</p>
 
