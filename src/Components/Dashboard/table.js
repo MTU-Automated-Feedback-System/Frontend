@@ -68,7 +68,7 @@ const Table = ({ columns, data }) => {
             .rows.slice(0, 10)
             .map((row) => {
               return (
-                <tr key={row.id}>
+                <tr key={row.id} className="font-normal">
                   {row.getVisibleCells().map((cell) => {
                     return (
                       <td key={cell.id} className="whitespace-nowrap px-6 py-4">
