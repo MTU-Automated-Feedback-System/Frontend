@@ -7,7 +7,7 @@ const apiUrl = process.env.REACT_APP_API_URL_TEST;
 
 const Dashboard = () => {
   const rerender = useReducer(() => ({}), {})[1];
-  const [data, setData] = useState();
+  const [data, setData] = useState(false);
   const [loading, setLoading] = useState(true);
   const columns = useMemo(() => columnsExercise, []);
 
@@ -15,6 +15,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(apiUrl + "/exercise/all");
       setData(response.data.exercises);
+      console.log(data)
       setLoading(false);
     } catch (err) {
       console.log("error geting exercises" + err);
@@ -28,7 +29,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex h-full w-full px-1">
-      {!loading && <Table columns={columns} data={data} />}
+      {data && <Table columns={columns} data={data} />}
     </div>
   );
 };

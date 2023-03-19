@@ -12,13 +12,37 @@ import useKeyPress from "../../Hooks/useKeyPress";
 import OutputWindow from "./outputWindow";
 import CustomInput from "./customInput";
 import OutputDetails from "./outputDetails";
-import Tabs from "./description";
+import Description from "./description";
 
 const pythonDefault = `# some comment\nprint("test")`;
 const apiUrl = process.env.REACT_APP_API_URL_TEST;
 
+const showSuccessToast = (msg) => {
+  toast.success(msg || `Compiled Successfully!`, {
+    position: "top-right",
+    autoClose: 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+};
+
+const showErrorToast = (msg, timer) => {
+  toast.error(msg || `Something went wrong! Please try again.`, {
+    position: "top-right",
+    autoClose: timer ? timer : 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+};
+
 const Exercise = () => {
-  const {id} = useParams();
+  const { id } = useParams();
   const [data, setData] = useState();
   const [code, setCode] = useState(pythonDefault);
   const [customInput, setCustomInput] = useState("");
@@ -27,8 +51,8 @@ const Exercise = () => {
   const [theme, setTheme] = useState("vs-dark");
   const [language, setLanguage] = useState(languageOptions[0]);
   const [loading, setLoading] = useState(true);
+  const [exercise, setExercise] = useState(false);
 
-  const description = require("./sample_exercise.json");
   const submissions = ["woof"];
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
@@ -72,31 +96,22 @@ const Exercise = () => {
       },
       data: formData,
     };
-    console.log(options);
     axios
       .request(options)
       .then(function (response) {
-        console.log("res.data", response.data);
         const id = response.data.id;
-        console.log(`submission id = ${id}`);
         checkStatus(id);
       })
       .catch((err) => {
-        console.log(err);
         let error = err.response ? err.response.data : err;
-        // get error status
         let status = err.response.status;
-        console.log("status", status);
         if (status === 429) {
-          console.log("too many requests", status);
-
           showErrorToast(
             `Quota of 100 requests exceeded for the Day! Please read the blog on freeCodeCamp to learn how to setup your own RAPID API Judge0!`,
             10000
           );
         }
         setProcessing(false);
-        console.log("catch block...", error);
       });
   };
 
@@ -110,10 +125,8 @@ const Exercise = () => {
       },
     };
     try {
-      console.log(options);
       let response = await axios.request(options);
       let status = response.data.submission?.Item?.compiled_status;
-
       // Processed - we have a result
       if (status === "processing") {
         // still processing
@@ -125,50 +138,31 @@ const Exercise = () => {
         setProcessing(false);
         setOutputDetails(response.data);
         showSuccessToast(`Compiled Successfully!`);
-        console.log("response.data", response.data);
         return;
       }
     } catch (err) {
-      console.log("err", err);
       setProcessing(false);
       showErrorToast();
     }
   };
 
-  const showSuccessToast = (msg) => {
-    toast.success(msg || `Compiled Successfully!`, {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
+  useEffect(() => {
+    const getExercise = async () => {
+      try {
+        const response = await axios.get(apiUrl + "/exercise/" + id);
+        setExercise(response.data.Items[0]);
+        setLoading(false);
+      } catch (err) {
+        setExercise(null);
+      }
+    };
+    getExercise();
+  }, []);
 
-  const showErrorToast = (msg, timer) => {
-    toast.error(msg || `Something went wrong! Please try again.`, {
-      position: "top-right",
-      autoClose: timer ? timer : 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-  
-  const getData = async () => {
-    try {
-      const response = await axios.get(apiUrl + "/exercise/"+ id);
-      setData(response.data.exercises);
-      setLoading(false);
-    } catch (err) {
-      console.log("error geting exercises" + err);
-      setData(null);
+  useEffect(() => {
+    if (!loading) {
     }
-  };
+  }, [loading]);
 
   useEffect(() => {
     defineTheme("oceanic-next").then((_) =>
@@ -176,14 +170,10 @@ const Exercise = () => {
     );
   }, []);
 
-  useEffect(() => {
-    getData();
-  }, []);
-
   return (
     <div className="flex h-full w-full px-1">
       <div className="w-1/4 px-2">
-        <Tabs description={description.description} submissions={submissions} />
+        <Description exercise={exercise} submissions={submissions} />
       </div>
       <div className="flex h-full w-3/4 flex-col pl-2">
         <div className="h-3/5">
