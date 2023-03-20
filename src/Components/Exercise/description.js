@@ -38,7 +38,7 @@ const Description = ({ exercise, submissions }) => {
             <>
               <div className="text-lg px-2 pt-2">{exercise.description.title}</div>
               
-              <div className="px-2 pt-2">{exercise.description.description}</div>
+              <div dangerouslySetInnerHTML={{__html: exercise.description.description}} className="px-2 pt-2"/>
 
               <ul>
                 {exercise.description.examples.map((example) => (
