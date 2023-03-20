@@ -32,19 +32,20 @@ const Description = ({ exercise, submissions }) => {
           </Tab>
         ))}
       </Tab.List>
-      <Tab.Panels className="mt-2 space-x-1 rounded-xl bg-blue-800/10 p-1 font-mono">
+      <Tab.Panels className="mt-2 space-x-1 rounded-xl bg-blue-800/10 p-1 font-medium">
         <Tab.Panel>
           {exercise && (
             <>
-              <h1>{exercise.description.title}</h1>
-              <p>{exercise.description.description}</p>
+              <div className="text-lg px-2 pt-2">{exercise.description.title}</div>
+              
+              <div className="px-2 pt-2">{exercise.description.description}</div>
 
               <ul>
                 {exercise.description.examples.map((example) => (
                   <>
-                    <h3 className="text-sm font-medium leading-5">
+                    <div className="text-sm font-medium leading-5">
                       {example.title}
-                    </h3>
+                    </div>
                     <p>{example.desc}</p>
                   </>
                 ))}

@@ -14,7 +14,6 @@ import CustomInput from "./customInput";
 import OutputDetails from "./outputDetails";
 import Description from "./description";
 
-const pythonDefault = `# some comment\nprint("test")`;
 const apiUrl = process.env.REACT_APP_API_URL_TEST;
 
 const showSuccessToast = (msg) => {
@@ -43,8 +42,8 @@ const showErrorToast = (msg, timer) => {
 
 const Exercise = () => {
   const { id } = useParams();
-  const [data, setData] = useState();
-  const [code, setCode] = useState(pythonDefault);
+  // const [data, setData] = useState();
+  const [code, setCode] = useState();
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
@@ -53,7 +52,7 @@ const Exercise = () => {
   const [loading, setLoading] = useState(true);
   const [exercise, setExercise] = useState(false);
 
-  const submissions = ["woof"];
+  const [submissions, setSubmissions] = useState();
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
 
@@ -80,8 +79,8 @@ const Exercise = () => {
   const handleCompile = () => {
     setProcessing(true);
     const formData = {
-      exercise_id: "placeholder", // Future set dynamically to the assigment
-      student_id: "placeholder", // Same as exercise id
+      exercise_id: exercise?.exercise_id, // Future set dynamically to the assigment
+      student_id: "guest", // Same as exercise id
       language_id: language.id,
       // encode source code in base64
       source_code: Buffer.from(code).toString("base64"),
@@ -115,13 +114,13 @@ const Exercise = () => {
       });
   };
 
-  const checkStatus = async (id) => {
+  const checkStatus = async (submissionId) => {
     const options = {
       method: "GET",
       url: apiUrl + "/submission/i/",
       params: {
-        submission_id: id,
-        exercise_id: "placeholder", // Future set dynamically to the assigment
+        submission_id: submissionId,
+        exercise_id: id, // Future set dynamically to the assigment
       },
     };
     try {
@@ -150,7 +149,13 @@ const Exercise = () => {
     const getExercise = async () => {
       try {
         const response = await axios.get(apiUrl + "/exercise/" + id);
-        setExercise(response.data.Items[0]);
+        setExercise(response.data[0]);
+        const defaultCode = Buffer.from(
+          response.data[0].default_code,
+          "base64"
+        ).toString("utf-8");
+        onChange("code", defaultCode);
+
         setLoading(false);
       } catch (err) {
         setExercise(null);
@@ -158,11 +163,6 @@ const Exercise = () => {
     };
     getExercise();
   }, []);
-
-  useEffect(() => {
-    if (!loading) {
-    }
-  }, [loading]);
 
   useEffect(() => {
     defineTheme("oceanic-next").then((_) =>
