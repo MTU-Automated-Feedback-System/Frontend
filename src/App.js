@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Dashboard from "./Components/Dashboard";
-import Assignment from "./Components/Assignment"
+import Exercise from "./Components/Exercise";
 import Nav from "./Containers/Nav";
 /*
 TODO:
@@ -12,11 +12,11 @@ TODO:
 const App = () => {
   return (
     <BrowserRouter>
-      <Nav/>
+      <Nav />
       <Routes>
-        <Route element={<Nav/>}/>
-        <Route path="/" element={<Dashboard/>} />
-        <Route path="/assignment" element={<Assignment/>}/>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/exercise" element={<Dashboard />} />
+        <Route path="/exercise/:id" element={<Exercise />} />
       </Routes>
     </BrowserRouter>
   );

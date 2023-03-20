@@ -1,40 +1,60 @@
 import React, { useEffect, useState } from "react";
-import CodeEditor from "./codeEditor";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { classnames } from "../../Utils/general";
 import { languageOptions } from "../../Constants/languageOptions";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { Buffer } from "buffer";
 import { defineTheme } from "../../Lib/defineTheme";
+import CodeEditor from "./codeEditor";
 import useKeyPress from "../../Hooks/useKeyPress";
 import OutputWindow from "./outputWindow";
 import CustomInput from "./customInput";
 import OutputDetails from "./outputDetails";
-import ThemeDropdown from "./themeDropDown";
-import LanguageDropdown from "./languageDropdown";
+import Description from "./description";
 
-const pythonDefault = `# some comment\nprint("test")`;
+const apiUrl = process.env.REACT_APP_API_URL_TEST;
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const showSuccessToast = (msg) => {
+  toast.success(msg || `Compiled Successfully!`, {
+    position: "top-right",
+    autoClose: 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+};
 
-const Landing = () => {
-  const [code, setCode] = useState(pythonDefault);
+const showErrorToast = (msg, timer) => {
+  toast.error(msg || `Something went wrong! Please try again.`, {
+    position: "top-right",
+    autoClose: timer ? timer : 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+};
+
+const Exercise = () => {
+  const { id } = useParams();
+  // const [data, setData] = useState();
+  const [code, setCode] = useState();
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
-  const [theme, setTheme] = useState("cobalt");
+  const [theme, setTheme] = useState("vs-dark");
   const [language, setLanguage] = useState(languageOptions[0]);
+  const [loading, setLoading] = useState(true);
+  const [exercise, setExercise] = useState(false);
 
+  const [submissions, setSubmissions] = useState();
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
-
-  const onSelectChange = (sl) => {
-    console.log("selected Option...", sl);
-    setLanguage(sl);
-  };
 
   useEffect(() => {
     if (enterPress && ctrlPress) {
@@ -59,8 +79,8 @@ const Landing = () => {
   const handleCompile = () => {
     setProcessing(true);
     const formData = {
-      assignment_id: "placeholder", // Future set dynamically to the assigment 
-      student_id: "placeholder", // Same as assignment id 
+      exercise_id: exercise?.exercise_id, // Future set dynamically to the assigment
+      student_id: "guest", // Same as exercise id
       language_id: language.id,
       // encode source code in base64
       source_code: Buffer.from(code).toString("base64"),
@@ -68,55 +88,44 @@ const Landing = () => {
     };
     const options = {
       method: "POST",
-      url:  apiUrl + "/submission",
+      url: apiUrl + "/submission",
       params: { base64_encoded: "true", fields: "*" },
       headers: {
         "Content-Type": "application/json",
       },
       data: formData,
     };
-    console.log(options);
     axios
       .request(options)
       .then(function (response) {
-        console.log("res.data", response.data);
         const id = response.data.id;
-        console.log(`submission id = ${id}`)
         checkStatus(id);
       })
       .catch((err) => {
-        console.log(err)
         let error = err.response ? err.response.data : err;
-        // get error status
         let status = err.response.status;
-        console.log("status", status);
         if (status === 429) {
-          console.log("too many requests", status);
-
           showErrorToast(
             `Quota of 100 requests exceeded for the Day! Please read the blog on freeCodeCamp to learn how to setup your own RAPID API Judge0!`,
             10000
           );
         }
         setProcessing(false);
-        console.log("catch block...", error);
       });
   };
 
-  const checkStatus = async (id) => {
+  const checkStatus = async (submissionId) => {
     const options = {
       method: "GET",
       url: apiUrl + "/submission/i/",
       params: {
-        submission_id: id,
-        assignment_id: "placeholder", // Future set dynamically to the assigment 
-      }
+        submission_id: submissionId,
+        exercise_id: id, // Future set dynamically to the assigment
+      },
     };
     try {
-      console.log(options)
       let response = await axios.request(options);
-      let status = response.data.submission?.Item?.compiled_status;  
-
+      let status = response.data.submission?.Item?.compiled_status;
       // Processed - we have a result
       if (status === "processing") {
         // still processing
@@ -128,26 +137,32 @@ const Landing = () => {
         setProcessing(false);
         setOutputDetails(response.data);
         showSuccessToast(`Compiled Successfully!`);
-        console.log("response.data", response.data);
         return;
       }
     } catch (err) {
-      console.log("err", err);
       setProcessing(false);
       showErrorToast();
     }
   };
 
-  const handleThemeChange = (th) => {
-    const theme = th;
-    console.log("theme...", theme);
+  useEffect(() => {
+    const getExercise = async () => {
+      try {
+        const response = await axios.get(apiUrl + "/exercise/" + id);
+        setExercise(response.data[0]);
+        const defaultCode = Buffer.from(
+          response.data[0].default_code,
+          "base64"
+        ).toString("utf-8");
+        onChange("code", defaultCode);
 
-    if (["light", "vs-dark"].includes(theme.value)) {
-      setTheme(theme);
-    } else {
-      defineTheme(theme.value).then((_) => setTheme(theme));
-    }
-  };
+        setLoading(false);
+      } catch (err) {
+        setExercise(null);
+      }
+    };
+    getExercise();
+  }, []);
 
   useEffect(() => {
     defineTheme("oceanic-next").then((_) =>
@@ -155,56 +170,13 @@ const Landing = () => {
     );
   }, []);
 
-  const showSuccessToast = (msg) => {
-    toast.success(msg || `Compiled Successfully!`, {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-
-  const showErrorToast = (msg, timer) => {
-    toast.error(msg || `Something went wrong! Please try again.`, {
-      position: "top-right",
-      autoClose: timer ? timer : 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-
   return (
-    <>
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      <div className="flex flex-row">
-        <div className="px-4 py-2">
-          <LanguageDropdown onSelectChange={onSelectChange} />
-        </div>
-        <div className="px-4 py-2">
-          <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
-        </div>
+    <div className="flex h-full w-full px-1">
+      <div className="w-1/4 px-2">
+        <Description exercise={exercise} submissions={submissions} />
       </div>
-
-
-      <div className="flex flex-row items-start space-x-4 px-4 py-4">
-        
-        <div className="flex h-full w-full flex-col items-end justify-start">
+      <div className="flex h-full w-3/4 flex-col pl-2">
+        <div className="h-3/5">
           <CodeEditor
             code={code}
             onChange={onChange}
@@ -213,9 +185,12 @@ const Landing = () => {
           />
         </div>
 
-        <div className="right-container flex w-[30%] flex-shrink-0 flex-col">
+        <div className="flex h-2/5 flex-row">
           <OutputWindow outputDetails={outputDetails} />
-          <div className="flex flex-col items-end">
+          <div className="">
+            <h1 className="mb-2 bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-xl font-bold text-transparent">
+              Input
+            </h1>
             <CustomInput
               customInput={customInput}
               setCustomInput={setCustomInput}
@@ -230,11 +205,23 @@ const Landing = () => {
             >
               {processing ? "Processing..." : "Compile and Execute"}
             </button>
+            {outputDetails && <OutputDetails outputDetails={outputDetails} />}
           </div>
-          {outputDetails && <OutputDetails outputDetails={outputDetails} />}
         </div>
+
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </div>
-    </>
+    </div>
   );
 };
-export default Landing;
+export default Exercise;

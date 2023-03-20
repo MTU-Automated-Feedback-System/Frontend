@@ -51,15 +51,15 @@ const OutputWindow = ({ outputDetails }) => {
   };
 
   return (
-    <>
+    <div className="grow flex flex-col pr-2">
       <h1 className="mb-2 bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-xl font-bold text-transparent">
         Output
       </h1>
 
-      <div className="h-56 w-full overflow-y-auto rounded-md bg-[#1e293b] text-sm font-normal text-white">
+      <div className="h-full overflow-y-auto rounded-md bg-[#1e293b] text-sm font-normal text-white">
         {outputDetails ? <>{getOutput()}</> : null}
       </div>
-    </>
+    </div>
   );
 };
 

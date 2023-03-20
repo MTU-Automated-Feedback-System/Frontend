@@ -9,12 +9,16 @@
   margin: 0;
   padding: 0;
 }
+
 body {
   font-family: 'IBM Plex Sans', sans-serif;
   font-weight: 300;
   font-size: 14px;
 }
 
+#root {
+  height: 100vh;
+}
 .listItem:hover {
   background: #e2e8f0;
   cursor: pointer;
@@ -32,7 +36,7 @@ body {
   animation:octocat-wave .56s;
 }
 
-nav > a.active {
+nav > div > a.active {
   color: #ef7435;
 }
 
