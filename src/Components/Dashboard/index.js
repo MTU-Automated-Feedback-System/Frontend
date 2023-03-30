@@ -3,7 +3,7 @@ import { columnsExercise } from "./tableModels";
 import Table from "./table";
 import axios from "axios";
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = process.env.REACT_APP_API_URL_TEST;
 
 const Dashboard = () => {
   const rerender = useReducer(() => ({}), {})[1];

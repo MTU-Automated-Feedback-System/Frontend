@@ -14,7 +14,7 @@ import CustomInput from "./customInput";
 import OutputDetails from "./outputDetails";
 import Description from "./description";
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = process.env.REACT_APP_API_URL_TEST;
 
 const showSuccessToast = (msg) => {
   toast.success(msg || `Compiled Successfully!`, {

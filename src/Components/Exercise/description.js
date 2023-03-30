@@ -12,6 +12,7 @@ const Description = ({ exercise, submissions }) => {
     Submissions: submissions,
   });
 
+
   return (
     <Tab.Group>
       <Tab.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
@@ -36,18 +37,34 @@ const Description = ({ exercise, submissions }) => {
         <Tab.Panel>
           {exercise && (
             <>
-              <div className="text-lg px-2 pt-2">{exercise.description.title}</div>
-              
-              <div dangerouslySetInnerHTML={{__html: exercise.description.description}} className="px-2 pt-2"/>
+              <div className="px-2 pt-2 text-lg">
+                {exercise.description.title}
+              </div>
 
-              <ul>
-                {exercise.description.examples.map((example) => (
-                  <>
-                    <div className="text-sm font-medium leading-5">
-                      {example.title}
-                    </div>
-                    <p>{example.desc}</p>
-                  </>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: exercise.description.description,
+                }}
+                className="px-2 pt-2"
+              />
+            
+              <ul className="pt-3">
+                {exercise.description.examples.map((item, index) => (
+                  <li key={index}>
+                    {Object.entries(item).map(([key, value]) => (
+                      <>
+                        <div className="text-sm pl-3 pt-3 font-bold leading-5">
+                          {key}:
+                        </div>
+                        <div className="m-2 rounded-xl bg-blue-400/20 p-2">
+                          <div
+                            dangerouslySetInnerHTML={{ __html: value }}
+                            className="px-2 font-mono"
+                          />
+                        </div>
+                      </>
+                    ))}
+                  </li>
                 ))}
               </ul>
             </>
