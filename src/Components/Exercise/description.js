@@ -12,16 +12,15 @@ const Description = ({ exercise, submissions }) => {
     Submissions: submissions,
   });
 
-
   return (
     <Tab.Group>
-      <Tab.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
+      <Tab.List className="flex h-10 space-x-1 rounded-xl bg-blue-900/20 p-1 ">
         {Object.keys(categories).map((category) => (
           <Tab
             key={category}
             className={({ selected }) =>
               classNames(
-                "w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-blue-700",
+                "w-full rounded-lg py-1.5 text-sm font-medium leading-5 text-blue-700",
                 "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2",
                 selected
                   ? "bg-white shadow"
@@ -33,7 +32,7 @@ const Description = ({ exercise, submissions }) => {
           </Tab>
         ))}
       </Tab.List>
-      <Tab.Panels className="mt-2 space-x-1 rounded-xl bg-blue-800/10 p-1 font-medium">
+      <Tab.Panels className="mt-2 h-full space-x-1 overflow-y-auto rounded-xl bg-blue-800/10 p-1 font-medium">
         <Tab.Panel>
           {exercise && (
             <>
@@ -47,19 +46,19 @@ const Description = ({ exercise, submissions }) => {
                 }}
                 className="px-2 pt-2"
               />
-            
+
               <ul className="pt-3">
                 {exercise.description.examples.map((item, index) => (
                   <li key={index}>
                     {Object.entries(item).map(([key, value]) => (
                       <>
-                        <div className="text-sm pl-3 pt-3 font-bold leading-5">
+                        <div className="pl-3 pt-3 text-sm font-bold leading-5">
                           {key}:
                         </div>
                         <div className="m-2 rounded-xl bg-blue-400/20 p-2">
                           <div
                             dangerouslySetInnerHTML={{ __html: value }}
-                            className="px-2 font-mono"
+                            className="overflow-auto px-2 font-mono"
                           />
                         </div>
                       </>
@@ -72,7 +71,7 @@ const Description = ({ exercise, submissions }) => {
           {!exercise && <List />}
         </Tab.Panel>
 
-        <Tab.Panel>List of submissions</Tab.Panel>
+        <Tab.Panel className="">List of submissions</Tab.Panel>
       </Tab.Panels>
     </Tab.Group>
   );
