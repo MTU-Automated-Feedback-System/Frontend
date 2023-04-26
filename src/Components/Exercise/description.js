@@ -79,6 +79,7 @@ const Description = ({ exercise, submissions , updateCurrentSubmission}) => {
         <Tab.Panel>
           {submissions.length > 0 &&
             submissions.map((item, index) =>
+              
               item.submission_type === "run" ? (
                 <>
                   <div

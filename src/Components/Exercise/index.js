@@ -206,8 +206,9 @@ const Exercise = () => {
   }, []);
 
   useEffect(() => {
-    if (outputDetails)
-      setSubmissions(submissions => [outputDetails, ...submissions]);
+    // console.log(submissions.indexOf(outputDetails))
+    if (outputDetails && submissions.indexOf(outputDetails) == -1)
+      setSubmissions((submissions) => [outputDetails, ...submissions]);
   }, [outputDetails]);
 
   useEffect(() => {
@@ -282,14 +283,14 @@ const Exercise = () => {
                 </button>
                 <button
                   onClick={() => handleCompile("feedback")}
-                  disabled={!code}
+                  disabled={!outputDetails}
                   className={classnames(
                     "flex-shrink-0 rounded-md border-2 border-blue-200 bg-blue-50 px-4 py-2 transition hover:bg-blue-100",
                     "font-medium text-blue-700 duration-200 hover:shadow",
-                    !code ? "opacity-50" : ""
+                    !outputDetails ? "opacity-50" : ""
                   )}
                 >
-                  {processing ? "Processing" : "Feedback"}
+                  {processing ? "Processing" : "General Feedback"}
                 </button>
               </div>
             </div>

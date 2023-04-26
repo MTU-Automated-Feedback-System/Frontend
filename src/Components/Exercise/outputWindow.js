@@ -13,6 +13,7 @@ const OutputWindow = ({ outputDetails, testCases, handleCompile, processing }) =
             "Compiling your code ..."
           </div>
         ) : (
+          
           <div className="p-2">
             <OutputDetails
               outputDetails={outputDetails}
@@ -21,6 +22,8 @@ const OutputWindow = ({ outputDetails, testCases, handleCompile, processing }) =
               handleCompile={handleCompile}
               processing={processing}
             />
+
+            
           </div>
         )}
       </>

@@ -20,7 +20,19 @@ const OutputDetails = ({
           {outputDetails?.error_type}
         </div>
       ) : (
-        <div className="text-xl font-medium text-green-600">Success</div>
+        <div
+          className={
+            "text-xl font-medium " +
+            (outputDetails?.cases == 0 ? "text-green-700" : "text-red-700")
+          }
+        >
+          {outputDetails?.cases == 0
+            ? "Success"
+            : "Cases " +
+              (outputDetails?.test_cases.length - outputDetails?.cases) +
+              " / " +
+              outputDetails?.test_cases.length}
+        </div>
       )}
       <div className="flex flex-row gap-x-4">
         <div className="flex-grow ">
@@ -37,7 +49,15 @@ const OutputDetails = ({
                   </button>
                 ))}
               </div>
-
+              <button
+                className="mt-3 flex-shrink-0 rounded-md border-2 border-red-300 bg-orange-100 px-3 py-1
+              font-medium text-red-700 transition duration-200 hover:bg-orange-200"
+                onClick={() => {
+                  handleCompile("feedback", caseIndex);
+                }}
+              >
+                {processing ? "Processing" : "Case Specific Feedback"}
+              </button>
               {testCases[caseIndex].type !== "stdout" && (
                 <div className="mt-2 text-sm font-semibold"></div>
               )}
@@ -48,12 +68,10 @@ const OutputDetails = ({
                 <pre className="px-2 py-1 text-sm font-normal text-white ">
                   {testCases[caseIndex].type === "stdout"
                     ? Buffer.from(
-                        outputDetails?.test_cases[caseIndex]
-                          .output,
+                        outputDetails?.test_cases[caseIndex].output,
                         "base64"
                       ).toString("utf-8")
-                    : outputDetails?.test_cases[caseIndex]
-                        .output}
+                    : outputDetails?.test_cases[caseIndex].output}
                 </pre>
               </div>
 
@@ -77,26 +95,28 @@ const OutputDetails = ({
           <div className="mt-1 rounded-md bg-[#2a4555e1] text-sm font-normal text-white">
             <pre className="px-2 py-1 text-sm font-normal text-white ">
               {outputDetails &&
-                Buffer.from(
-                  outputDetails?.compiled_output,
-                  "base64"
-                ).toString("utf-8")}
+                Buffer.from(outputDetails?.compiled_output, "base64").toString(
+                  "utf-8"
+                )}
             </pre>
           </div>
         </div>
-        <div className="w-1/4">
-          <div className="text-lg font-semibold text-orange-600">Feedback</div>
-          <button
-            className="mt-1 flex-shrink-0 rounded-md border-2 border-red-300 bg-orange-100 px-3 py-1
-              font-medium text-red-700 transition duration-200 hover:bg-orange-200"
-            onClick={() => {
-              handleCompile("feedback", caseIndex);
-            }}
-          >
-            {processing ? "Processing" : "Case " + (caseIndex + 1) + " feedback"}
-          </button>
-          <div className="mt-3 max-h-full break-words rounded-md bg-orange-200 px-2 py-1 text-sm font-medium text-red-800 transition duration-200">
-            {outputDetails?.feedback?.message}
+
+        <div className="flex w-1/4 flex-col">
+          <div className="sticky top-0">
+            <div className="text-lg font-semibold text-orange-600 ">
+              Feedback:{" "}
+              <span className="text-sm font-semibold text-orange-700">
+                {outputDetails?.feedback?.type === "case"
+                  ? "Case " + (parseInt(outputDetails?.feedback?.case) + 1)
+                  : outputDetails?.feedback?.type[0].toUpperCase() +
+                    outputDetails?.feedback?.type.slice(1)}
+              </span>
+            </div>
+
+            <div className="max-h-full break-words rounded-md bg-orange-200 px-2 py-1 text-sm font-medium text-red-800 transition duration-200">
+              {outputDetails?.feedback?.message}
+            </div>
           </div>
         </div>
       </div>

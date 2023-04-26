@@ -43,10 +43,19 @@ const Feedback = ({ submissions }) => {
         submissions.map((item, index) =>
           item.submission_type === "feedback" ? (
             <>
-              <div key={index} className="m-1 mt-4 rounded-xl bg-blue-200 p-2">
-                <div className="mx-1 mt-2 text-sm font-semibold text-blue-900">
-                  {parseDate(item.date_time)}
+              <div key={index} className="m-1 mt-4 rounded-xl  bg-blue-200 p-2">
+                <div className="flex flex-row">
+                  <div className={"mx-1 mt-2 font-semibold text-blue-900"}>
+                    {item.feedback?.type === "case"
+                      ? "Case " + (parseInt(item.feedback?.case) + 1)
+                      : item.feedback?.type[0].toUpperCase() + item.feedback?.type.slice(1)}
+                  </div>
+                  <div className="flex-grow"></div>
+                  <div className="mx-1 mt-2 text-sm font-semibold text-blue-900">
+                    {parseDate(item.date_time)}
+                  </div>
                 </div>
+
                 <div className="mt-1 max-h-full break-words rounded-md bg-orange-200 px-2 py-1 text-sm font-medium text-red-800 transition duration-200">
                   {item?.feedback?.message}
                 </div>
