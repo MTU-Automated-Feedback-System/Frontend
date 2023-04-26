@@ -24,7 +24,7 @@ const Description = ({ exercise, submissions }) => {
                 "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2",
                 selected
                   ? "bg-white shadow"
-                  : "text-blue-100 hover:bg-white/[0.12] hover:text-white"
+                  : "text-blue-100 hover:bg-white/[0.12] hover:text-blue-500"
               )
             }
           >

@@ -1,7 +1,8 @@
 import React from "react";
-import { Buffer } from "buffer";
 
-const OutputWindow = ({ outputDetails }) => {
+import OutputDetails from "./outputDetails";
+
+const OutputWindow = ({ outputDetails, testCases, handleCompile, processing }) => {
   const getOutput = () => {
     let status = outputDetails?.submission?.Item?.compiled_status;
 
@@ -12,11 +13,14 @@ const OutputWindow = ({ outputDetails }) => {
             "Compiling your code ..."
           </div>
         ) : (
-          <div className="m-1 rounded-md bg-[#1B2B34] text-sm font-normal text-white">
-            <pre className="px-2 py-1 text-xs font-normal text-red-500 ">
-              {Buffer.from( outputDetails?.submission?.Item?.compiled_output,
-              "base64" ).toString("utf-8")}
-            </pre>
+          <div className="p-2">
+            <OutputDetails
+              outputDetails={outputDetails}
+              status={status}
+              testCases={testCases}
+              handleCompile={handleCompile}
+              processing={processing}
+            />
           </div>
         )}
       </>

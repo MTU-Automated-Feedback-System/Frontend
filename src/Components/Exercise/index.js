@@ -14,6 +14,7 @@ import CustomInput from "./customInput";
 import OutputDetails from "./outputDetails";
 import Description from "./description";
 import { Tab } from "@headlessui/react";
+import Feedback from "./feedback";
 
 const apiUrl = process.env.REACT_APP_API_URL_TEST;
 
@@ -56,8 +57,11 @@ const Exercise = () => {
   const [language, setLanguage] = useState(languageOptions[0]);
   const [loading, setLoading] = useState(true);
   const [exercise, setExercise] = useState(false);
-
+  const [caseIndex, setCaseIndex] = useState(0);
   const [submissions, setSubmissions] = useState();
+
+  const [feedback, setFeedback] = useState([]);
+
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
 
@@ -87,20 +91,34 @@ const Exercise = () => {
     }
   };
 
-  const handleCompile = () => {
+  const handleCompile = (type, case_index=-1) => {
     setProcessing(true);
-    const formData = {
-      exercise_id: exercise?.exercise_id, // Future set dynamically to the assigment
-      student_id: "guest", // Same as exercise id
-      language_id: language.id,
-      // encode source code in base64
-      source_code: Buffer.from(code).toString("base64"),
-      stdin: Buffer.from(customInput).toString("base64"),
-    };
+
+    const formData =
+      type === "run"
+        ? {
+            exercise_id: exercise?.exercise_id, // Future set dynamically to the assigment
+            student_id: "guest", // Same as exercise id
+            // language_id: language.id, // Future set dynamically to the assigment
+            feedback: {"type": "basic"},
+            source_code: Buffer.from(code).toString("base64"),
+            // stdin: Buffer.from(customInput).toString("base64"), // Future allow user to set custom input
+          }
+        : outputDetails?.submission?.Item;
+    
+    if (type === "feedback") {
+      if (case_index === -1) 
+        formData.feedback.type = "general";
+      else
+        formData.feedback.type = "case";
+        formData.feedback.case = case_index;
+    }
+
+    formData.submission_type = type;
+
     const options = {
       method: "POST",
       url: apiUrl + "/submission",
-      params: { base64_encoded: "true", fields: "*" },
       headers: {
         "Content-Type": "application/json",
       },
@@ -115,12 +133,8 @@ const Exercise = () => {
       .catch((err) => {
         let error = err.response ? err.response.data : err;
         let status = err.response.status;
-        if (status === 429) {
-          showErrorToast(
-            `Quota of 100 requests exceeded for the Day! Please read the blog on freeCodeCamp to learn how to setup your own RAPID API Judge0!`,
-            10000
-          );
-        }
+        console.log("error", error);
+        console.log("status", status);
         setProcessing(false);
       });
   };
@@ -198,8 +212,8 @@ const Exercise = () => {
 
         <div className="flex h-2/5 flex-col">
           <Tab.Group>
-            <div className="flex flex-row mt-2">
-              <Tab.List className="flex w-1/2 h-10 space-x-1 rounded-xl bg-blue-900/20 p-1 mr-1">
+            <div className="mt-2 flex flex-row">
+              <Tab.List className="mr-1 flex h-10 w-1/2 space-x-1 rounded-xl bg-blue-900/20 p-1">
                 {Object.keys(categories).map((category) => (
                   <Tab
                     key={category}
@@ -209,7 +223,7 @@ const Exercise = () => {
                         "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2",
                         selected
                           ? "bg-white shadow"
-                          : "text-blue-100 hover:bg-white/[0.12] hover:text-white"
+                          : "text-blue-100 hover:bg-white/[0.12] hover:text-blue-500"
                       )
                     }
                   >
@@ -217,38 +231,72 @@ const Exercise = () => {
                   </Tab>
                 ))}
               </Tab.List>
-              <div className="w-1/2 ml-1">
+              <div className="ml-1 w-1/2">
                 <button
-                  onClick={handleCompile}
+                  onClick={() => handleCompile("run")}
                   disabled={!code}
                   className={classnames(
-                    "flex-shrink-0 rounded-md border-2 border-blue-200 bg-blue-50 hover:bg-blue-100 px-4 py-2 transition",
-                    "duration-200 hover:shadow font-medium text-blue-700 mr-2",
+                    "flex-shrink-0 rounded-md border-2 border-blue-200 bg-blue-50 px-4 py-2 transition hover:bg-blue-100",
+                    "mr-2 font-medium text-blue-700 duration-200 hover:shadow",
                     !code ? "opacity-50" : ""
                   )}
                 >
                   {processing ? "Processing" : "Run"}
                 </button>
                 <button
-                  onClick={handleCompile}
+                  onClick={() => handleCompile("feedback")}
                   disabled={!code}
                   className={classnames(
-                    "flex-shrink-0 rounded-md border-2 border-blue-200 bg-blue-50 hover:bg-blue-100 px-4 py-2 transition",
-                    "duration-200 hover:shadow font-medium text-blue-700",
+                    "flex-shrink-0 rounded-md border-2 border-blue-200 bg-blue-50 px-4 py-2 transition hover:bg-blue-100",
+                    "font-medium text-blue-700 duration-200 hover:shadow",
                     !code ? "opacity-50" : ""
                   )}
                 >
-                  {processing ? "Processing..." : "Feedback"}
+                  {processing ? "Processing" : "Feedback"}
                 </button>
               </div>
             </div>
 
-            <Tab.Panels className="mt-2 h-full space-x-1 rounded-xl bg-blue-800/10 p-1 overflow-y-auto">
+            <Tab.Panels className="mt-2 h-full space-x-1 overflow-y-auto rounded-xl bg-blue-800/10 p-1">
               <Tab.Panel>
-                <OutputWindow outputDetails={outputDetails} />
+                <OutputWindow
+                  outputDetails={outputDetails}
+                  testCases={exercise?.test_cases}
+                  handleCompile={handleCompile}
+                  processing={processing}
+                />
               </Tab.Panel>
-              <Tab.Panel></Tab.Panel>
-              <Tab.Panel></Tab.Panel>
+              <Tab.Panel>
+                <Feedback feedback={feedback}></Feedback>
+              </Tab.Panel>
+              <Tab.Panel>
+                <div className="ml-2 mt-4 flex flex-row gap-x-4">
+                  {exercise &&
+                    exercise?.test_cases.map((expected_result, index) => (
+                      <button
+                        className="flex-shrink-0 rounded-md bg-blue-200 px-3 py-1 font-medium text-blue-700
+                      transition duration-200 hover:bg-blue-100 "
+                        onClick={() => setCaseIndex(index)}
+                      >
+                        Case {index + 1}
+                      </button>
+                    ))}
+                </div>
+
+                {exercise && (
+                  <div className="mx-2 mt-3 rounded-md bg-[#2a4555e1] text-sm font-normal text-white">
+                    <pre className="px-2 py-1 text-sm font-normal text-white ">
+                      {exercise &&
+                      exercise?.test_cases[caseIndex].type === "stdout"
+                        ? Buffer.from(
+                            exercise?.test_cases[caseIndex].expected_result,
+                            "base64"
+                          ).toString("utf-8")
+                        : exercise?.test_cases[caseIndex].expected_result}
+                    </pre>
+                  </div>
+                )}
+              </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>
 

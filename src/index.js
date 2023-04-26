@@ -5,6 +5,18 @@ import "./index.css";
 import App from "./App";
 import Footer from "./Containers/Footer";
 
+// Nasty error that is thrown by something unknown that is only problematic in development mode
+const customErrorHandler = (error) => {
+  const RESIZE_OBSERVER_ERROR = 'ResizeObserver loop limit exceeded';
+
+  if (error !== RESIZE_OBSERVER_ERROR) {
+    console.error(error);
+  }
+}
+
+window.onerror = customErrorHandler;
+
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <>
    <React.StrictMode>
@@ -14,8 +26,3 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   </>
  
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();
