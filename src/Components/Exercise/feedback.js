@@ -1,6 +1,6 @@
 
 
-const Feedback = ({feedback}) => {
+const Feedback = ({submissions}) => {
 
 }
 

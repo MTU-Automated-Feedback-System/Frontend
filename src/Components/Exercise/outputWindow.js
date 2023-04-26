@@ -4,7 +4,7 @@ import OutputDetails from "./outputDetails";
 
 const OutputWindow = ({ outputDetails, testCases, handleCompile, processing }) => {
   const getOutput = () => {
-    let status = outputDetails?.submission?.Item?.compiled_status;
+    let status = outputDetails?.compiled_status;
 
     return (
       <>

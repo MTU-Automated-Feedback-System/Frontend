@@ -4,14 +4,20 @@ import { Buffer } from "buffer";
 const stdOut = (output) => {};
 const expectedOutput = (output) => {};
 
-const OutputDetails = ({ outputDetails, status, testCases, handleCompile, processing }) => {
+const OutputDetails = ({
+  outputDetails,
+  status,
+  testCases,
+  handleCompile,
+  processing,
+}) => {
   const [caseIndex, setCaseIndex] = useState(0);
 
   return (
     <>
       {status === "error" ? (
         <div className="text-xl font-medium text-red-600">
-          {outputDetails?.submission?.Item?.error_type}
+          {outputDetails?.error_type}
         </div>
       ) : (
         <div className="text-xl font-medium text-green-600">Success</div>
@@ -42,11 +48,11 @@ const OutputDetails = ({ outputDetails, status, testCases, handleCompile, proces
                 <pre className="px-2 py-1 text-sm font-normal text-white ">
                   {testCases[caseIndex].type === "stdout"
                     ? Buffer.from(
-                        outputDetails?.submission?.Item?.test_cases[caseIndex]
+                        outputDetails?.test_cases[caseIndex]
                           .output,
                         "base64"
                       ).toString("utf-8")
-                    : outputDetails?.submission?.Item?.test_cases[caseIndex]
+                    : outputDetails?.test_cases[caseIndex]
                         .output}
                 </pre>
               </div>
@@ -70,10 +76,11 @@ const OutputDetails = ({ outputDetails, status, testCases, handleCompile, proces
 
           <div className="mt-1 rounded-md bg-[#2a4555e1] text-sm font-normal text-white">
             <pre className="px-2 py-1 text-sm font-normal text-white ">
-              {outputDetails && Buffer.from(
-                outputDetails?.submission?.Item?.compiled_output,
-                "base64"
-              ).toString("utf-8")}
+              {outputDetails &&
+                Buffer.from(
+                  outputDetails?.compiled_output,
+                  "base64"
+                ).toString("utf-8")}
             </pre>
           </div>
         </div>
@@ -82,12 +89,14 @@ const OutputDetails = ({ outputDetails, status, testCases, handleCompile, proces
           <button
             className="mt-1 flex-shrink-0 rounded-md border-2 border-red-300 bg-orange-100 px-3 py-1
               font-medium text-red-700 transition duration-200 hover:bg-orange-200"
-            onClick={() => {handleCompile("feedback", caseIndex)}}
+            onClick={() => {
+              handleCompile("feedback", caseIndex);
+            }}
           >
-            {processing ? "Processing" : "Submission feedback"}
+            {processing ? "Processing" : "Case " + (caseIndex + 1) + " feedback"}
           </button>
           <div className="mt-3 max-h-full break-words rounded-md bg-orange-200 px-2 py-1 text-sm font-medium text-red-800 transition duration-200">
-            {outputDetails?.submission?.Item?.feedback?.message}
+            {outputDetails?.feedback?.message}
           </div>
         </div>
       </div>

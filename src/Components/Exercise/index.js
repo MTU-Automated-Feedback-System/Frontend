@@ -58,9 +58,7 @@ const Exercise = () => {
   const [loading, setLoading] = useState(true);
   const [exercise, setExercise] = useState(false);
   const [caseIndex, setCaseIndex] = useState(0);
-  const [submissions, setSubmissions] = useState();
-
-  const [feedback, setFeedback] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
 
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
@@ -91,7 +89,7 @@ const Exercise = () => {
     }
   };
 
-  const handleCompile = (type, case_index=-1) => {
+  const handleCompile = (type, case_index = -1) => {
     setProcessing(true);
 
     const formData =
@@ -100,18 +98,18 @@ const Exercise = () => {
             exercise_id: exercise?.exercise_id, // Future set dynamically to the assigment
             student_id: "guest", // Same as exercise id
             // language_id: language.id, // Future set dynamically to the assigment
-            feedback: {"type": "basic"},
+            feedback: { type: "basic"},
             source_code: Buffer.from(code).toString("base64"),
             // stdin: Buffer.from(customInput).toString("base64"), // Future allow user to set custom input
           }
-        : outputDetails?.submission?.Item;
-    
+        : outputDetails;
+
     if (type === "feedback") {
-      if (case_index === -1) 
-        formData.feedback.type = "general";
-      else
+      if (case_index === -1) formData.feedback.type = "general";
+      else {
         formData.feedback.type = "case";
         formData.feedback.case = case_index;
+      }
     }
 
     formData.submission_type = type;
@@ -160,7 +158,7 @@ const Exercise = () => {
         return;
       } else {
         setProcessing(false);
-        setOutputDetails(response.data);
+        setOutputDetails(response.data?.submission?.Item);
         showSuccessToast(`Compiled Successfully!`);
         return;
       }
@@ -168,6 +166,18 @@ const Exercise = () => {
       setProcessing(false);
       showErrorToast();
     }
+  };
+
+  const updateCurrentSubmission = (submissionIndex) => {
+    // Change code to the submission code
+    setCode(
+      Buffer.from(submissions[submissionIndex].source_code, "base64").toString(
+        "utf-8"
+      )
+    );
+
+    // change output details to the submission output details
+    setOutputDetails(submissions[submissionIndex]);
   };
 
   useEffect(() => {
@@ -195,10 +205,32 @@ const Exercise = () => {
     );
   }, []);
 
+  useEffect(() => {
+    const getSubmissions = async () => {
+      try {
+        const response = await axios.get(apiUrl + "/submission/all");
+
+        // Loop through submission and sort them by date
+        let sortedSub = response.data.submissions.sort(
+          (a, b) => new Date(b.date_time) - new Date(a.date_time)
+        );
+
+        setSubmissions(sortedSub);
+      } catch (err) {
+        setSubmissions(null);
+      }
+    };
+    getSubmissions();
+  }, []);
+
   return (
     <div className="flex w-full flex-grow overflow-y-hidden px-1">
       <div className="flex h-full w-1/4 flex-col px-2">
-        <Description exercise={exercise} submissions={submissions} />
+        <Description
+          exercise={exercise}
+          submissions={submissions}
+          updateCurrentSubmission={updateCurrentSubmission}
+        />
       </div>
       <div className="flex w-3/4 flex-col pr-2">
         <div className="h-3/5">
@@ -267,7 +299,7 @@ const Exercise = () => {
                 />
               </Tab.Panel>
               <Tab.Panel>
-                <Feedback feedback={feedback}></Feedback>
+                <Feedback submissions={submissions}></Feedback>
               </Tab.Panel>
               <Tab.Panel>
                 <div className="ml-2 mt-4 flex flex-row gap-x-4">
@@ -299,27 +331,6 @@ const Exercise = () => {
               </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>
-
-          {/* <div className="">
-            <h1 className="mb-2 bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-xl font-bold text-transparent">
-              Input
-            </h1>
-            <CustomInput
-              customInput={customInput}
-              setCustomInput={setCustomInput}
-            />
-            <button
-              onClick={handleCompile}
-              disabled={!code}
-              className={classnames(
-                "z-10 mt-4 flex-shrink-0 rounded-md border-2 border-black bg-white px-4 py-2 shadow-[5px_5px_0px_0px_rgba(0,0,0)] transition duration-200 hover:shadow",
-                !code ? "opacity-50" : ""
-              )}
-            >
-              
-            </button>
-            {outputDetails && <OutputDetails outputDetails={outputDetails} />}
-          </div> */}
         </div>
 
         <ToastContainer
