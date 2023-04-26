@@ -98,7 +98,7 @@ const Exercise = () => {
             exercise_id: exercise?.exercise_id, // Future set dynamically to the assigment
             student_id: "guest", // Same as exercise id
             // language_id: language.id, // Future set dynamically to the assigment
-            feedback: { type: "basic"},
+            feedback: { type: "basic" },
             source_code: Buffer.from(code).toString("base64"),
             // stdin: Buffer.from(customInput).toString("base64"), // Future allow user to set custom input
           }
@@ -204,6 +204,11 @@ const Exercise = () => {
       setTheme({ value: "oceanic-next", label: "Oceanic Next" })
     );
   }, []);
+
+  useEffect(() => {
+    if (outputDetails)
+      setSubmissions(submissions => [outputDetails, ...submissions]);
+  }, [outputDetails]);
 
   useEffect(() => {
     const getSubmissions = async () => {
