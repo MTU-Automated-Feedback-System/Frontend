@@ -79,7 +79,7 @@ const Description = ({ exercise, submissions , updateCurrentSubmission}) => {
         <Tab.Panel>
           {submissions.length > 0 &&
             submissions.map((item, index) =>
-              
+
               item.submission_type === "run" ? (
                 <>
                   <div
@@ -98,6 +98,8 @@ const Description = ({ exercise, submissions , updateCurrentSubmission}) => {
                       >
                         {item.cases == 0
                           ? "Success"
+                          : item.compiled_status === "error"
+                          ? "Error"
                           : " " +
                             (item.test_cases.length - item.cases) +
                             " / " +

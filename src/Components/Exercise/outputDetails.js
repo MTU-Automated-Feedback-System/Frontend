@@ -15,27 +15,27 @@ const OutputDetails = ({
 
   return (
     <>
-      {status === "error" ? (
-        <div className="text-xl font-medium text-red-600">
-          {outputDetails?.error_type}
-        </div>
-      ) : (
-        <div
-          className={
-            "text-xl font-medium " +
-            (outputDetails?.cases == 0 ? "text-green-700" : "text-red-700")
-          }
-        >
-          {outputDetails?.cases == 0
-            ? "Success"
-            : "Cases " +
-              (outputDetails?.test_cases.length - outputDetails?.cases) +
-              " / " +
-              outputDetails?.test_cases.length}
-        </div>
-      )}
       <div className="flex flex-row gap-x-4">
         <div className="flex-grow ">
+          {status === "error" ? (
+            <div className="text-xl font-medium text-red-600">
+              {outputDetails?.error_type}
+            </div>
+          ) : (
+            <div
+              className={
+                "text-xl font-medium " +
+                (outputDetails?.cases == 0 ? "text-green-700" : "text-red-700")
+              }
+            >
+              {outputDetails?.cases == 0
+                ? "Success"
+                : "Cases " +
+                  (outputDetails?.test_cases.length - outputDetails?.cases) +
+                  " / " +
+                  outputDetails?.test_cases.length}
+            </div>
+          )}
           {status === "compiled" && (
             <>
               <div className="mt-2 flex flex-row gap-x-4">
@@ -102,23 +102,25 @@ const OutputDetails = ({
           </div>
         </div>
 
-        <div className="flex w-1/4 flex-col">
-          <div className="sticky top-0">
-            <div className="text-lg font-semibold text-orange-600 ">
-              Feedback:{" "}
-              <span className="text-sm font-semibold text-orange-700">
-                {outputDetails?.feedback?.type === "case"
-                  ? "Case " + (parseInt(outputDetails?.feedback?.case) + 1)
-                  : outputDetails?.feedback?.type[0].toUpperCase() +
-                    outputDetails?.feedback?.type.slice(1)}
-              </span>
-            </div>
+        {status !== "error" && (
+          <div className="flex w-1/4 flex-col">
+            <div className="sticky top-0">
+              <div className="text-lg font-semibold text-orange-600 ">
+                Feedback:{" "}
+                <span className="text-sm font-semibold text-orange-700">
+                  {outputDetails?.feedback?.type === "case"
+                    ? "Case " + (parseInt(outputDetails?.feedback?.case) + 1)
+                    : outputDetails?.feedback?.type[0].toUpperCase() +
+                      outputDetails?.feedback?.type.slice(1)}
+                </span>
+              </div>
 
-            <div className="max-h-full break-words rounded-md bg-orange-200 px-2 py-1 text-sm font-medium text-red-800 transition duration-200">
-              {outputDetails?.feedback?.message}
+              <div className="max-h-full break-words rounded-md bg-orange-200 px-2 py-1 text-sm font-medium text-red-800 transition duration-200">
+                {outputDetails?.feedback?.message}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );
