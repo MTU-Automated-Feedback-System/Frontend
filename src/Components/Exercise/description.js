@@ -41,7 +41,7 @@ const Description = ({ exercise, submissions , updateCurrentSubmission}) => {
         <Tab.Panel>
           {exercise && (
             <>
-              <div className="px-2 pt-2 text-lg">
+              <div className="px-2 pt-2 text-lg font-semibold text-blue-900">
                 {exercise.description.title}
               </div>
 
@@ -57,7 +57,7 @@ const Description = ({ exercise, submissions , updateCurrentSubmission}) => {
                   <li key={index}>
                     {Object.entries(item).map(([key, value]) => (
                       <>
-                        <div className="pl-3 pt-3 text-sm font-bold leading-5">
+                        <div className="pl-3 pt-3 text-sm font-bold leading-5 text-blue-900">
                           {key}:
                         </div>
                         <div className="m-2 rounded-xl bg-blue-400/20 p-2">
