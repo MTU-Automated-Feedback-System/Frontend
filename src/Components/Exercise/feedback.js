@@ -56,7 +56,7 @@ const Feedback = ({ submissions }) => {
                   </div>
                 </div>
 
-                <div className="mt-1 max-h-full break-words rounded-md bg-orange-200 px-2 py-1 text-sm font-medium text-red-800 transition duration-200">
+                <div className="mt-1 max-h-full break-words rounded-md bg-orange-200 px-2 py-1 text-sm font-medium text-amber-800 transition duration-200">
                   {item?.feedback?.message}
                 </div>
                 <FeedbackDiscolsure item={item}></FeedbackDiscolsure>

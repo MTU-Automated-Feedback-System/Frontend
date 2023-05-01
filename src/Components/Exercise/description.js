@@ -93,7 +93,7 @@ const Description = ({ exercise, submissions , updateCurrentSubmission}) => {
                           "py-3 px-2 font-semibold " +
                           (item.cases == 0
                             ? "text-green-700"
-                            : "text-red-700")
+                            : "text-amber-700")
                         }
                       >
                         {item.cases == 0

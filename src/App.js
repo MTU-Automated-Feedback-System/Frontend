@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Dashboard from "./Components/Dashboard";
 import Exercise from "./Components/Exercise";
-import Nav from "./Containers/Nav";
+import Nav from "./Containers/nav";
 /*
 TODO:
       - depcheck client + server to remove unused package

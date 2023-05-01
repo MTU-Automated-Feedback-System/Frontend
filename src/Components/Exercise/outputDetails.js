@@ -18,14 +18,14 @@ const OutputDetails = ({
       <div className="flex flex-row gap-x-4">
         <div className="flex-grow ">
           {status === "error" ? (
-            <div className="text-xl font-medium text-red-600">
+            <div className="text-xl font-medium text-amber-600">
               {outputDetails?.error_type}
             </div>
           ) : (
             <div
               className={
                 "text-xl font-medium " +
-                (outputDetails?.cases == 0 ? "text-green-700" : "text-red-700")
+                (outputDetails?.cases == 0 ? "text-green-700" : "text-amber-700")
               }
             >
               {outputDetails?.cases == 0
@@ -51,7 +51,7 @@ const OutputDetails = ({
               </div>
               <button
                 className="mt-3 flex-shrink-0 rounded-md border-2 border-red-300 bg-orange-100 px-3 py-1
-              font-medium text-red-700 transition duration-200 hover:bg-orange-200"
+              font-medium text-amber-700 transition duration-200 hover:bg-orange-200"
                 onClick={() => {
                   handleCompile("feedback", caseIndex);
                 }}
@@ -115,7 +115,7 @@ const OutputDetails = ({
                 </span>
               </div>
 
-              <div className="max-h-full break-words rounded-md bg-orange-200 px-2 py-1 text-sm font-medium text-red-800 transition duration-200">
+              <div className="max-h-full break-words rounded-md bg-orange-200 px-2 py-1 text-sm font-medium text-amber-800 transition duration-200">
                 {outputDetails?.feedback?.message}
               </div>
             </div>

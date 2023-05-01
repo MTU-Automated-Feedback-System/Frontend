@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import chess from "../../Assets/chess.png";
+import chess from "../Assets/chess.png";
 
 const Nav = () => {
   return (

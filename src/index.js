@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 
 import "./index.css";
 import App from "./App";
-import Footer from "./Containers/Footer";
+import Footer from "./Containers/footer";
 
 // Nasty error that is thrown by something unknown that is only problematic in development mode
 const customErrorHandler = (error) => {
