@@ -10,7 +10,7 @@ import Table from "./table";
 import axios from "axios";
 import { Dialog, Transition } from "@headlessui/react";
 
-const apiUrl = process.env.REACT_APP_API_URL_TEST;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const Dashboard = () => {
   const rerender = useReducer(() => ({}), {})[1];

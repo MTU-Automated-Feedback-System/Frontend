@@ -16,7 +16,7 @@ import Description from "./description";
 import { Tab } from "@headlessui/react";
 import Feedback from "./feedback";
 
-const apiUrl = process.env.REACT_APP_API_URL_TEST;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
