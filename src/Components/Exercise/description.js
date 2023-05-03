@@ -77,7 +77,7 @@ const Description = ({ exercise, submissions , updateCurrentSubmission}) => {
         </Tab.Panel>
 
         <Tab.Panel>
-          {submissions.length > 0 &&
+          {submissions & submissions?.length > 0 &&
             submissions.map((item, index) =>
 
               item.submission_type === "run" ? (
