@@ -16,7 +16,7 @@ const Description = ({ exercise, submissions , updateCurrentSubmission}) => {
     let d = new Date(date);
     return d.toLocaleString();
   }
-  // console.log(submissions);
+  console.log(submissions);
   return (
     <Tab.Group>
       <Tab.List className="flex h-10 space-x-1 rounded-xl bg-blue-900/20 p-1 ">
@@ -80,7 +80,7 @@ const Description = ({ exercise, submissions , updateCurrentSubmission}) => {
           {submissions &&
             submissions.map((item, index) =>
 
-              item.submission_type === "run" && item.compiled_status === "compiled" ? (
+              item.submission_type === "run" && item.compiled_status === "" ? (
                 <>
                   <div
                     key={index}
