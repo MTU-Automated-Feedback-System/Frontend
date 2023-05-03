@@ -6,7 +6,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Description = ({ exercise, submissions , updateCurrentSubmission}) => {
+const Description = ({ exercise, submissions, updateCurrentSubmission }) => {
   let [categories] = useState({
     Exercise: exercise,
     Submissions: submissions,
@@ -15,8 +15,8 @@ const Description = ({ exercise, submissions , updateCurrentSubmission}) => {
   const parseDate = (date) => {
     let d = new Date(date);
     return d.toLocaleString();
-  }
-
+  };
+  console.log(submissions);
   return (
     <Tab.Group>
       <Tab.List className="flex h-10 space-x-1 rounded-xl bg-blue-900/20 p-1 ">
@@ -77,15 +77,17 @@ const Description = ({ exercise, submissions , updateCurrentSubmission}) => {
         </Tab.Panel>
 
         <Tab.Panel>
-          {submissions & submissions?.length > 0 &&
+          {submissions &&
             submissions.map((item, index) =>
-
-              item.submission_type === "run" ? (
+              item.submission_type === "run" &&
+              item.compiled_status === "compiled" ? (
                 <>
                   <div
                     key={index}
-                    className="m-1 mt-3 rounded-xl bg-blue-400/20 hover:bg-blue-400/40 cursor-pointer"
-                    onClick={() => {updateCurrentSubmission(index)}}
+                    className="m-1 mt-3 cursor-pointer rounded-xl bg-blue-400/20 hover:bg-blue-400/40"
+                    onClick={() => {
+                      updateCurrentSubmission(index);
+                    }}
                   >
                     <div className="flex flex-row">
                       <div
@@ -107,7 +109,9 @@ const Description = ({ exercise, submissions , updateCurrentSubmission}) => {
                             " cases"}
                       </div>
                       <div className="flex-grow"></div>
-                      <div className="py-3 pr-2 font-semibold">{parseDate(item.date_time)}</div>
+                      <div className="py-3 pr-2 font-semibold">
+                        {parseDate(item.date_time)}
+                      </div>
                     </div>
                   </div>
                 </>
