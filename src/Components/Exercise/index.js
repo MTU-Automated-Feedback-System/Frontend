@@ -150,13 +150,16 @@ const Exercise = () => {
       let response = await axios.request(options);
       let status = response.data.submission?.Item?.compiled_status;
       // Processed - we have a result
-      if (status === "processing") {
+      console.log(status)
+      console.log(response)
+      if (status === undefined || status === "processing") {
         // still processing
         setTimeout(() => {
-          checkStatus(id);
+          checkStatus(submissionId);
         }, 2000);
         return;
       } else {
+        console.log(response)
         setProcessing(false);
         setOutputDetails(response.data?.submission?.Item);
         showSuccessToast(`Compiled Successfully!`);
