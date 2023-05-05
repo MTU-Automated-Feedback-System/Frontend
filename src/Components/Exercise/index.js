@@ -277,7 +277,7 @@ const Exercise = () => {
                   className={classnames(
                     "flex-shrink-0 rounded-md border-2 border-blue-200 bg-blue-50 px-4 py-2 transition hover:bg-blue-100",
                     "mr-2 font-medium text-blue-700 duration-200 hover:shadow",
-                    !code ? "opacity-50" : ""
+                    !code ? "opacity-50 cursor-not-allowed" : ""
                   )}
                 >
                   {processing ? "Processing" : "Run"}
@@ -288,7 +288,7 @@ const Exercise = () => {
                   className={classnames(
                     "flex-shrink-0 rounded-md border-2 border-blue-200 bg-blue-50 px-4 py-2 transition hover:bg-blue-100",
                     "font-medium text-blue-700 duration-200 hover:shadow",
-                    !outputDetails || outputDetails?.compiled_status === "error" || auth.authStatus !== "signedIn" ? "opacity-50" : ""
+                    !outputDetails || outputDetails?.compiled_status === "error" || auth.authStatus !== "signedIn" ? "opacity-50 cursor-not-allowed" : ""
                   )}
                 >
                   {processing ? "Processing" : "General Feedback"}
