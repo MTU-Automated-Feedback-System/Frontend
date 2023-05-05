@@ -5,15 +5,15 @@ const SignUp = () => {
 
   return (
     <>
-      <div class="relative rounded-lg bg-white shadow dark:bg-gray-700">
-        <div class="flex justify-end p-2">
+      <div className="relative rounded-lg bg-white shadow dark:bg-gray-700">
+        <div className="flex justify-end p-2">
           <button
             type="button"
-            class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
+            className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
             data-modal-toggle="authentication-modal"
           >
             <svg
-              class="h-5 w-5"
+              className="h-5 w-5"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -26,14 +26,14 @@ const SignUp = () => {
             </svg>
           </button>
         </div>
-        <form class="space-y-6 px-6 pb-4 sm:pb-6 lg:px-8 xl:pb-8" action="#">
-          <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+        <form className="space-y-6 px-6 pb-4 sm:pb-6 lg:px-8 xl:pb-8" action="#">
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white">
             Sign in to our platform
           </h3>
           <div>
             <label
               for="email"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
+              className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
             >
               Your email
             </label>
@@ -41,7 +41,7 @@ const SignUp = () => {
               type="email"
               name="email"
               id="email"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 sm:text-sm"
+              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 sm:text-sm"
               placeholder="name@company.com"
               required=""
             />
@@ -49,7 +49,7 @@ const SignUp = () => {
           <div>
             <label
               for="password"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
+              className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
             >
               Your password
             </label>
@@ -58,25 +58,25 @@ const SignUp = () => {
               name="password"
               id="password"
               placeholder="••••••••"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 sm:text-sm"
+              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 sm:text-sm"
               required=""
             />
           </div>
-          <div class="flex justify-between">
-            <div class="flex items-start">
-              <div class="flex h-5 items-center">
+          <div className="flex justify-between">
+            <div className="flex items-start">
+              <div className="flex h-5 items-center">
                 <input
                   id="remember"
                   aria-describedby="remember"
                   type="checkbox"
-                  class="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                  className="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                   required=""
                 />
               </div>
-              <div class="ml-3 text-sm">
+              <div className="ml-3 text-sm">
                 <label
                   for="remember"
-                  class="font-medium text-gray-900 dark:text-gray-300"
+                  className="font-medium text-gray-900 dark:text-gray-300"
                 >
                   Remember me
                 </label>
@@ -84,22 +84,22 @@ const SignUp = () => {
             </div>
             <a
               href="#"
-              class="text-sm text-blue-700 hover:underline dark:text-blue-500"
+              className="text-sm text-blue-700 hover:underline dark:text-blue-500"
             >
               Lost Password?
             </a>
           </div>
           <button
             type="submit"
-            class="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Login to your account
           </button>
-          <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
+          <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
             Not registered?{" "}
             <a
               href="#"
-              class="text-blue-700 hover:underline dark:text-blue-500"
+              className="text-blue-700 hover:underline dark:text-blue-500"
             >
               Create account
             </a>

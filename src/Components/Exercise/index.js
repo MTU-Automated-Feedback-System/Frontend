@@ -15,6 +15,7 @@ import OutputDetails from "./outputDetails";
 import Description from "./description";
 import { Tab } from "@headlessui/react";
 import Feedback from "./feedback";
+import { useAuth } from "../../Contexts/authContext";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -48,6 +49,7 @@ const showErrorToast = (msg, timer) => {
 
 const Exercise = () => {
   const { id } = useParams();
+  const auth = useAuth();
   // const [data, setData] = useState();
   const [code, setCode] = useState();
   const [customInput, setCustomInput] = useState("");
@@ -70,7 +72,7 @@ const Exercise = () => {
   });
 
   useEffect(() => {
-    if (enterPress && ctrlPress) {
+    if (enterPress && ctrlPress && !processing) {
       console.log("enterPress", enterPress);
       console.log("ctrlPress", ctrlPress);
       handleCompile();
@@ -96,7 +98,7 @@ const Exercise = () => {
       type === "run"
         ? {
             exercise_id: exercise?.exercise_id, // Future set dynamically to the assigment
-            student_id: "guest", // Same as exercise id
+            student_id: auth.authStatus === "signedIn" ? auth.attrInfo[3].Value : "guest", // Same as exercise id
             // language_id: language.id, // Future set dynamically to the assigment
             feedback: { type: "basic" },
             source_code: Buffer.from(code).toString("base64"),
@@ -150,8 +152,6 @@ const Exercise = () => {
       let response = await axios.request(options);
       let status = response.data.submission?.Item?.compiled_status;
       // Processed - we have a result
-      console.log(status)
-      console.log(response)
       if (status === undefined || status === "processing") {
         // still processing
         setTimeout(() => {
@@ -159,7 +159,6 @@ const Exercise = () => {
         }, 2000);
         return;
       } else {
-        console.log(response)
         setProcessing(false);
         setOutputDetails(response.data?.submission?.Item);
         showSuccessToast(`Compiled Successfully!`);
@@ -216,8 +215,8 @@ const Exercise = () => {
   useEffect(() => {
     const getSubmissions = async () => {
       try {
-        const response = await axios.get(apiUrl + "/submission/all");
-
+        let path = auth.authStatus === "signedIn" ? "/submissions/" + auth?.attrInfo[3]?.Value : "/submission/all";
+        const response = await axios.get(apiUrl + path);
         // Loop through submission and sort them by date
         let sortedSub = response.data.submissions.sort(
           (a, b) => new Date(b.date_time) - new Date(a.date_time)
@@ -229,7 +228,7 @@ const Exercise = () => {
       }
     };
     getSubmissions();
-  }, []);
+  }, [auth.authStatus]);
 
   return (
     <div className="flex w-full flex-grow overflow-y-hidden px-1">
@@ -285,11 +284,11 @@ const Exercise = () => {
                 </button>
                 <button
                   onClick={() => handleCompile("feedback")}
-                  disabled={!outputDetails || outputDetails?.compiled_status === "error"}
+                  disabled={!outputDetails || outputDetails?.compiled_status === "error" || auth.authStatus !== "signedIn"}
                   className={classnames(
                     "flex-shrink-0 rounded-md border-2 border-blue-200 bg-blue-50 px-4 py-2 transition hover:bg-blue-100",
                     "font-medium text-blue-700 duration-200 hover:shadow",
-                    !outputDetails || outputDetails?.compiled_status === "error" ? "opacity-50" : ""
+                    !outputDetails || outputDetails?.compiled_status === "error" || auth.authStatus !== "signedIn" ? "opacity-50" : ""
                   )}
                 >
                   {processing ? "Processing" : "General Feedback"}

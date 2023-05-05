@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Buffer } from "buffer";
+import { useAuth } from "../../Contexts/authContext";
 
 const stdOut = (output) => {};
 const expectedOutput = (output) => {};
@@ -12,6 +13,7 @@ const OutputDetails = ({
   processing,
 }) => {
   const [caseIndex, setCaseIndex] = useState(0);
+  const auth = useAuth();
 
   return (
     <>
@@ -25,7 +27,9 @@ const OutputDetails = ({
             <div
               className={
                 "text-xl font-medium " +
-                (outputDetails?.cases == 0 ? "text-green-700" : "text-amber-700")
+                (outputDetails?.cases == 0
+                  ? "text-green-700"
+                  : "text-amber-700")
               }
             >
               {outputDetails?.cases == 0
@@ -50,8 +54,8 @@ const OutputDetails = ({
                 ))}
               </div>
               <button
-                className="mt-3 flex-shrink-0 rounded-md border-2 border-red-300 bg-orange-100 px-3 py-1
-              font-medium text-amber-700 transition duration-200 hover:bg-orange-200"
+                className={"mt-3 flex-shrink-0 rounded-md border-2 border-red-300 bg-orange-100 px-3 py-1 font-medium text-amber-700 transition duration-200 hover:bg-orange-200 " + (!outputDetails || outputDetails?.compiled_status === "error" || auth.authStatus !== "signedIn" ? "opacity-50" : "") }
+                disabled={auth.authStatus !== "signedIn"}
                 onClick={() => {
                   handleCompile("feedback", caseIndex);
                 }}

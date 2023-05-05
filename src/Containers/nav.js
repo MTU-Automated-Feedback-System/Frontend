@@ -2,8 +2,11 @@ import React, { Fragment, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import chess from "../Assets/chess.png";
 import { Dialog, Transition } from "@headlessui/react";
+import { SignIn } from "../Components/SignIn/SignIn";
+import { useAuth } from "../Contexts/authContext";
 
 const Nav = () => {
+  const auth = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
@@ -43,10 +46,20 @@ const Nav = () => {
         </div>
         <button
           type="button"
-          onClick={openModal}
+          onClick={
+            auth.authStatus === "signedIn"
+              ? () => auth.signOut()
+              : auth.authStatus === "loading"
+              ? ""
+              : openModal
+          }
           className="mt-4 inline-flex items-center rounded-lg border-0 bg-gray-100 py-1 px-3 text-base font-medium hover:bg-gray-200 focus:outline-none md:mt-0"
         >
-          Sign in
+          {auth.authStatus === "signedIn"
+            ? "Sign Out"
+            : auth.authStatus === "loading"
+            ? "Loading"
+            : "Sign in"}
           <svg
             fill="none"
             stroke="currentColor"
@@ -94,86 +107,7 @@ const Nav = () => {
                     Sign in on AFS
                   </Dialog.Title>
 
-                  <form
-                    class="space-y-6 px-6 pb-4 sm:pb-6 lg:px-8 xl:pb-8"
-                    action="#"
-                  >
-                    <div className="pt-6">
-                      <label
-                        for="email"
-                        class="mb-2 block text-sm font-medium text-gray-900 "
-                      >
-                        Your email
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                        placeholder="name@company.com"
-                        required=""
-                      />
-                    </div>
-                    <div>
-                      <label
-                        for="password"
-                        class="mb-2 block text-sm font-medium text-gray-900 "
-                      >
-                        Your password
-                      </label>
-                      <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        placeholder="••••••••"
-                        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500  sm:text-sm"
-                        required=""
-                      />
-                    </div>
-                    <div class="flex justify-between">
-                      <div class="flex items-start">
-                        <div class="flex h-5 items-center">
-                          <input
-                            id="remember"
-                            aria-describedby="remember"
-                            type="checkbox"
-                            class="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300  "
-                            required=""
-                          />
-                        </div>
-                        <div class="ml-3 text-sm">
-                          <label
-                            for="remember"
-                            class="font-medium text-gray-900 dark:text-gray-300"
-                          >
-                            Remember me
-                          </label>
-                        </div>
-                      </div>
-                      <a
-                        href="#"
-                        class="text-sm text-blue-700 hover:underline "
-                      >
-                        Lost Password?
-                      </a>
-                    </div>
-                    <button
-                      type="submit"
-                      class="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
-                    >
-                      Login to your account
-                    </button>
-                    <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-                      Not registered?{" "}
-                      <a
-                        href="#"
-                        class="text-blue-700 hover:underline dark:text-blue-500"
-                      >
-                        Create account
-                      </a>
-                    </div>
-                  </form>
+                  <SignIn closeModal={closeModal} />
                 </Dialog.Panel>
               </Transition.Child>
             </div>

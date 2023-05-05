@@ -4,12 +4,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./Components/Dashboard";
 import Exercise from "./Components/Exercise";
 import Nav from "./Containers/nav";
-/*
-TODO:
-      - depcheck client + server to remove unused package
- */
+import { useAuth } from "./Hooks/useAuthTest";
+
 
 const App = () => {
+  const auth = useAuth();
   return (
     <BrowserRouter>
       <Nav />
