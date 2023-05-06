@@ -5,7 +5,7 @@ import Dashboard from "./Components/Dashboard";
 import Exercise from "./Components/Exercise";
 import Nav from "./Containers/nav";
 import { useAuth } from "./Hooks/useAuthTest";
-
+import Wip from "./Components/wip";
 
 const App = () => {
   const auth = useAuth();
@@ -16,6 +16,7 @@ const App = () => {
         <Route path="/" element={<Dashboard />} />
         <Route path="/exercise" element={<Dashboard />} />
         <Route path="/exercise/:id" element={<Exercise />} />
+        <Route path="/submissions" element={<Wip />} />
       </Routes>
     </BrowserRouter>
   );

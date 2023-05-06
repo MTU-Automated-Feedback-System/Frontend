@@ -40,6 +40,7 @@ const Nav = () => {
             className="mr-5 hover:text-gray-900"
             to="submissions"
             rel="noopener noreferrer"
+            oncClick={() => console.log("clicked")}
           >
             Submissions
           </NavLink>

@@ -363,7 +363,7 @@ const NewExercise = () => {
             <button
               className="mb-2 mr-2 flex-shrink-0 rounded-md bg-green-200 px-2 py-1
               font-semibold text-green-700 transition duration-200 hover:bg-green-100"
-              onClick={() => addRequirement()}
+              onClick={() => addTestCase()}
             >
               +
             </button>
