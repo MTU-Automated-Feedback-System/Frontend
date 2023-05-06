@@ -54,7 +54,14 @@ const OutputDetails = ({
                 ))}
               </div>
               <button
-                className={"mt-3 flex-shrink-0 rounded-md border-2 border-red-300 bg-orange-100 px-3 py-1 font-medium text-amber-700 transition duration-200 hover:bg-orange-200 " + (!outputDetails || outputDetails?.compiled_status === "error" || auth.authStatus !== "signedIn" ? "opacity-50 cursor-not-allowed" : "") }
+                className={
+                  "mt-3 flex-shrink-0 rounded-md border-2 border-red-300 bg-orange-100 px-3 py-1 font-medium text-amber-700 transition duration-200 hover:bg-orange-200 " +
+                  (!outputDetails ||
+                  outputDetails?.compiled_status === "error" ||
+                  auth.authStatus !== "signedIn"
+                    ? "cursor-not-allowed opacity-50"
+                    : "")
+                }
                 disabled={auth.authStatus !== "signedIn"}
                 onClick={() => {
                   handleCompile("feedback", caseIndex);
