@@ -22,8 +22,6 @@ const OutputWindow = ({ outputDetails, testCases, handleCompile, processing }) =
               handleCompile={handleCompile}
               processing={processing}
             />
-
-            
           </div>
         )}
       </>

@@ -18,7 +18,7 @@ const OutputDetails = ({
   return (
     <>
       <div className="flex flex-row gap-x-4">
-        <div className="flex-grow ">
+        <div className="flex-grow w-4/6">
           {status === "error" ? (
             <div className="text-xl font-medium text-amber-600">
               {outputDetails?.error_type}
@@ -75,8 +75,8 @@ const OutputDetails = ({
 
               <div className="mt-2 text-sm font-semibold">Output</div>
 
-              <div className="mt-1 rounded-md bg-[#2a4555e1] text-sm font-normal text-white">
-                <pre className="px-2 py-1 text-sm font-normal text-white ">
+              <div className="mt-1 rounded-md bg-[#2a4555e1] text-sm font-normal text-white overflow-auto">
+                <pre className="px-2 py-1 text-sm font-normal text-white">
                   {testCases[caseIndex].type === "stdout"
                     ? Buffer.from(
                         outputDetails?.test_cases[caseIndex].output,
@@ -114,7 +114,7 @@ const OutputDetails = ({
         </div>
 
         {status !== "error" && (
-          <div className="flex w-1/4 flex-col">
+          <div className="flex w-2/6 flex-col">
             <div className="sticky top-0">
               <div className="text-lg font-semibold text-orange-600 ">
                 Feedback:{" "}
