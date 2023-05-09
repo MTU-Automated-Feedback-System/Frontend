@@ -56,7 +56,7 @@ const Exercise = () => {
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("vs-dark");
-  const [language, setLanguage] = useState(languageOptions[0]);
+ const [language, setLanguage] = useState(languageOptions[0]);
   const [loading, setLoading] = useState(true);
   const [exercise, setExercise] = useState(false);
   const [caseIndex, setCaseIndex] = useState(0);
@@ -279,6 +279,7 @@ const Exercise = () => {
                     "mr-2 font-medium text-blue-700 duration-200 hover:shadow",
                     !code ? "opacity-50 cursor-not-allowed" : ""
                   )}
+                  id="run"
                 >
                   {processing ? "Processing" : "Run"}
                 </button>

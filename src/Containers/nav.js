@@ -47,6 +47,7 @@ const Nav = () => {
         </div>
         <button
           type="button"
+          id="sign-in-button"
           onClick={
             auth.authStatus === "signedIn"
               ? () => auth.signOut()
