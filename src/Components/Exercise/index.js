@@ -232,6 +232,7 @@ const Exercise = () => {
 
   return (
     <div className="flex w-full flex-grow overflow-y-hidden px-1">
+      
       <div className="flex h-full w-1/4 flex-col px-2">
         <Description
           exercise={exercise}

@@ -11,6 +11,7 @@ import axios from "axios";
 import { Dialog, Transition } from "@headlessui/react";
 import NewExercise from "./newExercise";
 import { useAuth } from "../../Contexts/authContext";
+import computer from "../../Assets/computer.gif";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -45,154 +46,128 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="flex h-full w-full px-1">
-        {data && <Table columns={columns} data={data} />}
-      </div>
-      <button
-        type="button"
-        onClick={openModal}
-        disabled={auth.authStatus !== "signedIn"}
-        className={
-          "ml-3 mr-2 inline-flex w-fit rounded-md border-2 border-blue-200 bg-blue-50 px-4 py-2 font-medium text-blue-700 transition duration-200 hover:bg-blue-100 hover:shadow " +
-          (auth.authStatus !== "signedIn" ? "opacity-50 cursor-not-allowed" : "")
-        }
-      >
-        New Exercise
-        <svg
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          className="ml-1 h-4 w-4"
-          viewBox="0 0 24 24"
-        >
-          <path d="M5 12h14M12 5l7 7-7 7"></path>
-        </svg>
-      </button>
-
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className=" relative z-10" onClose={() => {}}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
+      {data ? (
+        <>
+          <div className="flex h-full w-full px-1">
+            {data && <Table columns={columns} data={data} />}
+          </div>
+          <button
+            type="button"
+            onClick={openModal}
+            disabled={auth.authStatus !== "signedIn"}
+            className={
+              "ml-3 mr-2 inline-flex w-fit rounded-md border-2 border-blue-200 bg-blue-50 px-4 py-2 font-medium text-blue-700 transition duration-200 hover:bg-blue-100 hover:shadow " +
+              (auth.authStatus !== "signedIn"
+                ? "cursor-not-allowed opacity-50"
+                : "")
+            }
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
+            New Exercise
+            <svg
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="ml-1 h-4 w-4"
+              viewBox="0 0 24 24"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+          </button>
 
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full  items-center justify-center p-4 text-center">
+          <Transition appear show={isOpen} as={Fragment}>
+            <Dialog as="div" className=" relative z-10" onClose={() => {}}>
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
                 leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
               >
-                <Dialog.Panel className="w-[40rem] transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
-                  >
-                    New Exercise
-                  </Dialog.Title>
-                  <NewExercise />
-                  <button
-                    className="mt-2 inline-flex w-full justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    onClick={closeModal}
-                  >
-                    Submit
-                  </button>
-                  <button
-                    className="mt-2 inline-flex w-full justify-center rounded-md border border-transparent bg-orange-100 px-4 py-2 text-sm font-medium text-orange-900 hover:bg-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
-                    onClick={closeModal}
-                  >
-                    Cancel
-                  </button>
-                  {/* <form className="overflow-auto">
-                    <div className="group relative z-0 mb-6 w-full">
-                      <input
-                        type="email"
-                        name="floating_email"
-                        id="floating_email"
-                        className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
-                        placeholder=" "
-                        required
-                      />
-                      <label
-                        for="floating_email"
-                        className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500"
-                      >
-                        Title
-                      </label>
-                    </div>
-                    <div className="group relative z-0 mb-6 w-full">
-                      <input
-                        type="password"
-                        name="floating_password"
-                        id="floating_password"
-                        className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
-                        placeholder=" "
-                        required
-                      />
-                      <label
-                        for="floating_password"
-                        className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500"
-                      >
-                        Short Description
-                      </label>
-                    </div>
-                    <div className="group relative z-0 mb-6 w-full">
-                      <input
-                        type="password"
-                        name="repeat_password"
-                        id="floating_repeat_password"
-                        className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
-                        placeholder=" "
-                        required
-                      />
-                      <label
-                        for="floating_repeat_password"
-                        className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500"
-                      >
-                        Allowed functions
-                      </label>
-                    </div>
-
-                    <div className="relative mb-3" data-te-input-wrapper-init>
-                      <textarea
-                        className="peer-focus:text-primary peer block min-h-[auto] w-full rounded border-2  bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none  [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                        id="exampleFormControlTextarea1"
-                        rows="4"
-                        placeholder="Your message"
-                      ></textarea>
-                      <label
-                        for="exampleFormControlTextarea1"
-                        className="peer-focus:text-primary  pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none "
-                      >
-                        Full description
-                      </label>
-                    </div>
-                    <button
-                      type="submit"
-                      className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto"
-                    >
-                      Next options
-                    </button>
-                  </form> */}
-                </Dialog.Panel>
+                <div className="fixed inset-0 bg-black bg-opacity-25" />
               </Transition.Child>
-            </div>
+
+              <div className="fixed inset-0 overflow-y-auto">
+                <div className="flex min-h-full  items-center justify-center p-4 text-center">
+                  <Transition.Child
+                    as={Fragment}
+                    enter="ease-out duration-300"
+                    enterFrom="opacity-0 scale-95"
+                    enterTo="opacity-100 scale-100"
+                    leave="ease-in duration-200"
+                    leaveFrom="opacity-100 scale-100"
+                    leaveTo="opacity-0 scale-95"
+                  >
+                    <Dialog.Panel className="w-[40rem] transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-lg font-medium leading-6 text-gray-900"
+                      >
+                        New Exercise
+                      </Dialog.Title>
+                      <NewExercise />
+                      <button
+                        className="mt-2 inline-flex w-full justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        onClick={closeModal}
+                      >
+                        Submit
+                      </button>
+                      <button
+                        className="mt-2 inline-flex w-full justify-center rounded-md border border-transparent bg-orange-100 px-4 py-2 text-sm font-medium text-orange-900 hover:bg-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+                        onClick={closeModal}
+                      >
+                        Cancel
+                      </button>
+                    </Dialog.Panel>
+                  </Transition.Child>
+                </div>
+              </div>
+            </Dialog>
+          </Transition>
+        </>
+      ) : (
+        <div className="flex h-full  w-full flex-col">
+          <div className="flex-grow"></div>
+          <h1 className=" mb-4 text-center text-3xl font-normal">
+            <span className="text-gray-700 underline decoration-orange-300">
+              Website is taking a break
+            </span>{" "}
+            🍵
+          </h1>
+
+          <div className="mb-4 text-center text-xl font-normal">
+            Reach me at{" "}
+            <span
+              className="cursor-pointer font-semibold underline decoration-blue-300	"
+              onClick={(e) => {
+                window.location.href = "mailto:romain.clemencon@mycit.ie";
+                e.preventDefault();
+              }}
+            >
+              romain.clemencon@mycit.ie
+            </span>{" "}
+            for a demo.
           </div>
-        </Dialog>
-      </Transition>
+          <div className="overflow-hidden px-5">
+            <img
+              src={computer}
+              className="m-auto mb-4 rounded-lg border shadow-lg"
+              alt="A computer loading"
+              loading="lazy"
+            />
+          </div>
+          <p className=" mb-4 text-center italic">
+            Credit to Amanda Cassingham-Bardwell{" "}
+            <a href="https://dribbble.com/shots/4051871-Blue-Screen">
+              @dribbble
+            </a>
+          </p>
+          <div className="flex-grow"></div>
+        </div>
+      )}
     </>
   );
 };
