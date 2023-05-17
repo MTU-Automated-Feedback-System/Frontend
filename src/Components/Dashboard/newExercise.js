@@ -47,7 +47,10 @@ const NewExercise = () => {
   };
 
   const addTestCase = () => {
-    setTestCases([  ...testCases, { expected_result: "", threshold: 75, input: "", type: "" }]);
+    setTestCases([
+      ...testCases,
+      { expected_result: "", threshold: 75, input: "", type: "stdout" },
+    ]);
     setTestCaseIndex(testCases.length);
   };
 
@@ -68,6 +71,24 @@ const NewExercise = () => {
     }
 
     setRequirements(newRequirements);
+  };
+
+  const deleteTestCase = (index) => {
+    const newTestCases = [...testCases];
+    newTestCases.splice(index, 1);
+
+    if (index === testCaseIndex) {
+      if (index === testCases.length - 1) {
+        setTestCaseIndex(index - 1);
+      }
+    }
+
+    if (index !== testCaseIndex) {
+      if (testCaseIndex === testCaseIndex.length - 1) {
+        setTestCaseIndex(testCaseIndex - 1);
+      }
+    }
+    setTestCases(newTestCases);
   };
 
   const changeIndex = (index) => {
@@ -104,9 +125,6 @@ const NewExercise = () => {
       content: example,
     });
   };
-
-
-
 
   return (
     <>
