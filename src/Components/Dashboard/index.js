@@ -12,8 +12,10 @@ import { Dialog, Transition } from "@headlessui/react";
 import NewExercise from "./newExercise";
 import { useAuth } from "../../Contexts/authContext";
 import computer from "../../Assets/computer.gif";
+import { Buffer } from "buffer";
 
-const apiUrl = process.env.REACT_APP_API_URL;
+
+const apiUrl = process.env.REACT_APP_API_URL_TEST;
 
 const Dashboard = () => {
   const auth = useAuth();
@@ -21,6 +23,26 @@ const Dashboard = () => {
   const [data, setData] = useState(false);
   const columns = useMemo(() => columnsExercise, []);
   const [isOpen, setIsOpen] = useState(false);
+
+  const [title, setTitle] = useState();
+  const [description, setDescription] = useState("");
+
+  const [examples, setExamples] = useState([{ title: "", content: "" }]);
+  const [exampleIndex, setExampleIndex] = useState(0);
+
+  const [requirements, setRequirements] = useState([]);
+  const [requirementsIndex, setRequirementsIndex] = useState(-1);
+
+  const [currExample, setCurrentExample] = useState({ title: "", content: "" });
+  const [mainName, setMainName] = useState("");
+  const [code, setCode] = React.useState(`def main_function_name():\n  ...\n`);
+
+  const [testCases, setTestCases] = useState([
+    { expected_result: "", threshold: 75, input: "", type: "stdout" },
+  ]);
+
+  const [testCaseIndex, setTestCaseIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   function closeModal() {
     setIsOpen(false);
@@ -38,6 +60,73 @@ const Dashboard = () => {
       console.log("error geting exercises" + err);
       setData(null);
     }
+  };
+
+  const createExample = (example) => {
+    let ex = {};
+    ex = { ...ex, [example.title]: example.content };
+    return ex;
+  };
+
+  const formatExamples = (exa) => {
+    let formattedExamples = [];
+    exa.forEach((ex) =>
+      formattedExamples.push(createExample(ex))
+    );
+    return formattedExamples;
+  };
+
+  const formatTestCases = (testCases) => {
+    let formattedTestCases = [];
+    testCases.forEach((testCase) => {
+      formattedTestCases.push({
+        expected_result:
+          testCase.type === "result"
+            ? Buffer.from(testCase.expected_result.trim()).toString("base64")
+            : Buffer.from(testCase.expected_result).toString("base64"),
+        threshold: testCase.threshold,
+        input: testCase.input,
+        type: testCase.type,
+      });
+    });
+    return formattedTestCases;
+  };
+
+  const handleSubmit = () => {
+    console.log(examples);
+    const formData = {
+      exercise_id: `${data.length + 1}`,
+      description: {
+        title: title,
+        description: description,
+        examples: formatExamples(examples),
+      },
+      default_code: Buffer.from(code).toString("base64"),
+      expected_elements: requirements,
+      main_name: mainName,
+      test_cases: formatTestCases(testCases),
+    };
+    console.log(formData);
+    const options = {
+      method: "POST",
+      url: apiUrl + "/exercise",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: formData,
+    };
+
+    axios
+      .request(options)
+      .then(function () {
+        getData();
+      })
+      .catch((err) => {
+        let error = err.response ? err.response.data : err;
+        let status = err.response.status;
+        console.log("error", error);
+        console.log("status", status);
+      });
   };
 
   useEffect(() => {
@@ -108,10 +197,38 @@ const Dashboard = () => {
                       >
                         New Exercise
                       </Dialog.Title>
-                      <NewExercise />
+                      <NewExercise
+                        title={title}
+                        setTitle={setTitle}
+                        description={description}
+                        setDescription={setDescription}
+                        examples={examples}
+                        setExamples={setExamples}
+                        exampleIndex={exampleIndex}
+                        setExampleIndex={setExampleIndex}
+                        requirements={requirements}
+                        setRequirements={setRequirements}
+                        requirementsIndex={requirementsIndex}
+                        setRequirementsIndex={setRequirementsIndex}
+                        currExample={currExample}
+                        setCurrentExample={setCurrentExample}
+                        mainName={mainName}
+                        setMainName={setMainName}
+                        code={code}
+                        setCode={setCode}
+                        testCases={testCases}
+                        setTestCases={setTestCases}
+                        testCaseIndex={testCaseIndex}
+                        setTestCaseIndex={setTestCaseIndex}
+                        selectedIndex={selectedIndex}
+                        setSelectedIndex={setSelectedIndex}
+                      />
                       <button
                         className="mt-2 inline-flex w-full justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        onClick={closeModal}
+                        onClick={() => {
+                          handleSubmit();
+                          closeModal();
+                        }}
                       >
                         Submit
                       </button>

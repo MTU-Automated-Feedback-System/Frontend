@@ -30,7 +30,7 @@ const AuthProvider = ({ children }) => {
   const [sessionInfo, setSessionInfo] = useState({})
   const [attrInfo, setAttrInfo] = useState([])
   
-  console.log("AuthProvider", authStatus, sessionInfo, attrInfo)
+  // console.log("AuthProvider", authStatus, sessionInfo, attrInfo)
 
   useEffect(() => {
     async function getSessionInfo() {

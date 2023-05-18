@@ -10,14 +10,12 @@ import { defineTheme } from "../../Lib/defineTheme";
 import CodeEditor from "./codeEditor";
 import useKeyPress from "../../Hooks/useKeyPress";
 import OutputWindow from "./outputWindow";
-import CustomInput from "./customInput";
-import OutputDetails from "./outputDetails";
 import Description from "./description";
 import { Tab } from "@headlessui/react";
 import Feedback from "./feedback";
 import { useAuth } from "../../Contexts/authContext";
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = process.env.REACT_APP_API_URL_TEST;
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -56,7 +54,7 @@ const Exercise = () => {
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("vs-dark");
- const [language, setLanguage] = useState(languageOptions[0]);
+  const [language, setLanguage] = useState(languageOptions[0]);
   const [loading, setLoading] = useState(true);
   const [exercise, setExercise] = useState(false);
   const [caseIndex, setCaseIndex] = useState(0);
@@ -98,7 +96,8 @@ const Exercise = () => {
       type === "run"
         ? {
             exercise_id: exercise?.exercise_id, // Future set dynamically to the assigment
-            student_id: auth.authStatus === "signedIn" ? auth.attrInfo[3].Value : "guest", // Same as exercise id
+            student_id:
+              auth.authStatus === "signedIn" ? auth.attrInfo[3].Value : "guest", // Same as exercise id
             // language_id: language.id, // Future set dynamically to the assigment
             feedback: { type: "basic" },
             source_code: Buffer.from(code).toString("base64"),
@@ -215,7 +214,10 @@ const Exercise = () => {
   useEffect(() => {
     const getSubmissions = async () => {
       try {
-        let path = auth.authStatus === "signedIn" ? "/submissions/" + auth?.attrInfo[3]?.Value : "/submission/all";
+        let path =
+          auth.authStatus === "signedIn"
+            ? "/submissions/" + auth?.attrInfo[3]?.Value + "/" + id
+            : "/submission/all";
         const response = await axios.get(apiUrl + path);
         // Loop through submission and sort them by date
         let sortedSub = response.data.submissions.sort(
@@ -232,7 +234,6 @@ const Exercise = () => {
 
   return (
     <div className="flex w-full flex-grow overflow-y-hidden px-1">
-      
       <div className="flex h-full w-1/4 flex-col px-2">
         <Description
           exercise={exercise}
@@ -278,7 +279,7 @@ const Exercise = () => {
                   className={classnames(
                     "flex-shrink-0 rounded-md border-2 border-blue-200 bg-blue-50 px-4 py-2 transition hover:bg-blue-100",
                     "mr-2 font-medium text-blue-700 duration-200 hover:shadow",
-                    !code ? "opacity-50 cursor-not-allowed" : ""
+                    !code ? "cursor-not-allowed opacity-50" : ""
                   )}
                   id="run"
                 >
@@ -286,11 +287,19 @@ const Exercise = () => {
                 </button>
                 <button
                   onClick={() => handleCompile("feedback")}
-                  disabled={!outputDetails || outputDetails?.compiled_status === "error" || auth.authStatus !== "signedIn"}
+                  disabled={
+                    !outputDetails ||
+                    outputDetails?.compiled_status === "error" ||
+                    auth.authStatus !== "signedIn"
+                  }
                   className={classnames(
                     "flex-shrink-0 rounded-md border-2 border-blue-200 bg-blue-50 px-4 py-2 transition hover:bg-blue-100",
                     "font-medium text-blue-700 duration-200 hover:shadow",
-                    !outputDetails || outputDetails?.compiled_status === "error" || auth.authStatus !== "signedIn" ? "opacity-50 cursor-not-allowed" : ""
+                    !outputDetails ||
+                      outputDetails?.compiled_status === "error" ||
+                      auth.authStatus !== "signedIn"
+                      ? "cursor-not-allowed opacity-50"
+                      : ""
                   )}
                 >
                   {processing ? "Processing" : "General Feedback"}
@@ -328,12 +337,10 @@ const Exercise = () => {
                   <div className="mx-2 mt-3 rounded-md bg-[#2a4555e1] text-sm font-normal text-white">
                     <pre className="px-2 py-1 text-sm font-normal text-white ">
                       {exercise &&
-                      exercise?.test_cases[caseIndex].type === "stdout"
-                        ? Buffer.from(
-                            exercise?.test_cases[caseIndex].expected_result,
-                            "base64"
-                          ).toString("utf-8")
-                        : exercise?.test_cases[caseIndex].expected_result}
+                        Buffer.from(
+                          exercise?.test_cases[caseIndex].expected_result,
+                          "base64"
+                        ).toString("utf-8")}
                     </pre>
                   </div>
                 )}

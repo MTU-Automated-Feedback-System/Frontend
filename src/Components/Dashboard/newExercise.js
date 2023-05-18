@@ -7,26 +7,32 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const NewExercise = () => {
-  const [title, setTitle] = useState();
-  const [description, setDescription] = useState("");
-
-  const [examples, setExamples] = useState([{ title: "", content: "" }]);
-  const [exampleIndex, setExampleIndex] = useState(0);
-
-  const [requirements, setRequirements] = useState([]);
-  const [requirementsIndex, setRequirementsIndex] = useState(-1);
-
-  const [currExample, setCurrentExample] = useState({ title: "", content: "" });
-  const [mainName, setMainName] = useState("");
-  const [code, setCode] = React.useState(`def main_function_name():\n  ...\n`);
-
-  const [testCases, setTestCases] = useState([
-    { expected_result: "", threshold: 75, input: "", type: "stdout" },
-  ]);
-  const [testCaseIndex, setTestCaseIndex] = useState(0);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
+const NewExercise = ({
+  title,
+  setTitle,
+  description,
+  setDescription,
+  examples,
+  setExamples,
+  exampleIndex,
+  setExampleIndex,
+  requirements,
+  setRequirements,
+  requirementsIndex,
+  setRequirementsIndex,
+  currExample,
+  setCurrentExample,
+  mainName,
+  setMainName,
+  code,
+  setCode,
+  testCases,
+  setTestCases,
+  testCaseIndex,
+  setTestCaseIndex,
+  selectedIndex,
+  setSelectedIndex,
+}) => {
   let [categories] = useState({
     stdout: "stdout",
     result: "result",
@@ -49,7 +55,7 @@ const NewExercise = () => {
   const addTestCase = () => {
     setTestCases([
       ...testCases,
-      { expected_result: "", threshold: 75, input: "", type: "stdout" },
+      { expected_result: "", threshold: 75, input: "", type: testCases[testCaseIndex].type },
     ]);
     setTestCaseIndex(testCases.length);
   };
@@ -157,7 +163,7 @@ const NewExercise = () => {
           />
         </div>
 
-        <hr class="mx-auto my-4 h-1 w-[28rem] rounded border-0 bg-gray-300 " />
+        <hr className="mx-auto my-4 h-1 w-[28rem] rounded border-0 bg-gray-300 " />
 
         <div className="group relative z-0 mb-6 w-full">
           <div className="mb-1 pl-1 text-base font-medium text-gray-800">
@@ -230,7 +236,7 @@ const NewExercise = () => {
             editorSetValue={updateExample}
           />
         </div>
-        <hr class="mx-auto my-4 h-1 w-[28rem] rounded border-0 bg-gray-300 " />
+        <hr className="mx-auto my-4 h-1 w-[28rem] rounded border-0 bg-gray-300 " />
         <div className="group relative z-0 mb-3 mt-7 w-full">
           <input
             type="text"
@@ -271,7 +277,7 @@ const NewExercise = () => {
           </div>
         </div>
 
-        <hr class="mx-auto my-4 h-1 w-[28rem] rounded border-0 bg-gray-300 " />
+        <hr className="mx-auto my-4 h-1 w-[28rem] rounded border-0 bg-gray-300 " />
 
         <div className="group relative z-0 mb-6 w-full">
           <div className="mb-1 pl-1 text-base font-medium text-gray-800">
@@ -369,7 +375,7 @@ const NewExercise = () => {
           )}
         </div>
 
-        <hr class="mx-auto my-4 h-1 w-[28rem] rounded border-0 bg-gray-300 " />
+        <hr className="mx-auto my-4 h-1 w-[28rem] rounded border-0 bg-gray-300 " />
 
         <div className="group relative z-0 mb-6 w-full">
           <div className="mb-1 pl-1 text-base font-medium text-gray-800">
@@ -395,7 +401,7 @@ const NewExercise = () => {
                         ? " bg-blue-100"
                         : " bg-blue-200")
                     }
-                    onClick={() => setRequirementsIndex(index)}
+                    onClick={() => setTestCaseIndex(index)}
                   >
                     Case {index + 1}
                   </button>
@@ -407,7 +413,7 @@ const NewExercise = () => {
                         : "")
                     }
                     disabled={testCases.length === 1}
-                    onClick={() => deleteRequirement(index)}
+                    onClick={() => deleteTestCase(index)}
                   >
                     X
                   </button>
@@ -430,6 +436,11 @@ const NewExercise = () => {
                         : "text-blue-100 hover:bg-white/[0.12] hover:text-blue-500"
                     )
                   }
+                  onClick={() => {
+                    const newTestCases = [...testCases];
+                    newTestCases[testCaseIndex].type = category;
+                    setTestCases(newTestCases);
+                  }}
                 >
                   {category}
                 </Tab>
@@ -443,8 +454,12 @@ const NewExercise = () => {
                   id="floating_email"
                   className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 pb-1 pt-2.5 text-base text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0  "
                   placeholder=" "
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  value={testCases[testCaseIndex].input}
+                  onChange={(e) => {
+                    const newTestCases = [...testCases];
+                    newTestCases[testCaseIndex].input = e.target.value;
+                    setTestCases(newTestCases);
+                  }}
                 />
                 <label
                   for="floating_email"
@@ -456,15 +471,22 @@ const NewExercise = () => {
               <Tab.Panel>
                 <label
                   for="message"
-                  class="ml-1 mb-2 block text-sm font-medium text-gray-600"
+                  className="ml-1 mb-2 block text-sm font-medium text-gray-600"
                 >
                   Expected result
                 </label>
                 <textarea
                   id="message"
                   rows="4"
-                  class="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   placeholder="Enter your expected output from the program"
+                  value={testCases[testCaseIndex].expected_result}
+                  onChange={(e) => {
+                    const newTestCases = [...testCases];
+                    newTestCases[testCaseIndex].expected_result =
+                      e.target.value;
+                    setTestCases(newTestCases);
+                  }}
                 />
               </Tab.Panel>
 
@@ -476,8 +498,13 @@ const NewExercise = () => {
                     id="floating_email"
                     className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 pb-1 pt-2.5 text-base text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0  "
                     placeholder=" "
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={testCases[testCaseIndex].expected_result}
+                    onChange={(e) => {
+                      const newTestCases = [...testCases];
+                      newTestCases[testCaseIndex].expected_result =
+                        e.target.value;
+                      setTestCases(newTestCases);
+                    }}
                   />
                   <label
                     for="floating_email"
@@ -491,7 +518,7 @@ const NewExercise = () => {
           </Tab.Group>
         </div>
 
-        <hr class="mx-auto my-4 h-1 w-[28rem] rounded border-0 bg-gray-300 " />
+        <hr className="mx-auto my-4 h-1 w-[28rem] rounded border-0 bg-gray-300 " />
 
         <div className="group relative z-0 mb-4 mt-3 w-full">
           <input

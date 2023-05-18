@@ -18,7 +18,7 @@ const OutputDetails = ({
   return (
     <>
       <div className="flex flex-row gap-x-4">
-        <div className="flex-grow w-4/6">
+        <div className="w-4/6 flex-grow">
           {status === "error" ? (
             <div className="text-xl font-medium text-amber-600">
               {outputDetails?.error_type}
@@ -75,14 +75,12 @@ const OutputDetails = ({
 
               <div className="mt-2 text-sm font-semibold">Output</div>
 
-              <div className="mt-1 rounded-md bg-[#2a4555e1] text-sm font-normal text-white overflow-auto">
+              <div className="mt-1 overflow-auto rounded-md bg-[#2a4555e1] text-sm font-normal text-white">
                 <pre className="px-2 py-1 text-sm font-normal text-white">
-                  {testCases[caseIndex].type === "stdout"
-                    ? Buffer.from(
-                        outputDetails?.test_cases[caseIndex].output,
-                        "base64"
-                      ).toString("utf-8")
-                    : outputDetails?.test_cases[caseIndex].output}
+                  {Buffer.from(
+                    outputDetails?.test_cases[caseIndex].output,
+                    "base64"
+                  ).toString("utf-8")}
                 </pre>
               </div>
 
@@ -90,12 +88,10 @@ const OutputDetails = ({
 
               <div className="mt-1 rounded-md bg-[#2a4555e1] text-sm font-normal text-white">
                 <pre className="px-2 py-1 text-sm font-normal text-white ">
-                  {testCases[caseIndex].type === "stdout"
-                    ? Buffer.from(
-                        testCases[caseIndex].expected_result,
-                        "base64"
-                      ).toString("utf-8")
-                    : testCases[caseIndex].expected_result}
+                  {Buffer.from(
+                    testCases[caseIndex].expected_result,
+                    "base64"
+                  ).toString("utf-8")}
                 </pre>
               </div>
             </>
