@@ -5,7 +5,7 @@ import ContentLoader, { List } from "react-content-loader";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-
+// Get the description of the exercise and the submissions of the user
 const Description = ({ exercise, submissions, updateCurrentSubmission }) => {
   let [categories] = useState({
     Exercise: exercise,
