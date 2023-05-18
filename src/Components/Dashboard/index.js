@@ -15,7 +15,7 @@ import computer from "../../Assets/computer.gif";
 import { Buffer } from "buffer";
 
 
-const apiUrl = process.env.REACT_APP_API_URL_TEST;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const Dashboard = () => {
   const auth = useAuth();
