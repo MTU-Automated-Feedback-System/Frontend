@@ -217,7 +217,7 @@ const Exercise = () => {
         let path =
           auth.authStatus === "signedIn"
             ? "/submissions/" + auth?.attrInfo[3]?.Value + "/" + id
-            : "/submission/all";
+            : "/submission/all/" + id ;
         const response = await axios.get(apiUrl + path);
         // Loop through submission and sort them by date
         let sortedSub = response.data.submissions.sort(
