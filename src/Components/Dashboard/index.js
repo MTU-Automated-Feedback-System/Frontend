@@ -14,13 +14,15 @@ import { useAuth } from "../../Contexts/authContext";
 import computer from "../../Assets/computer.gif";
 import { Buffer } from "buffer";
 
-
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = process.env.REACT_APP_API_URL_TEST;
 
 const Dashboard = () => {
   const auth = useAuth();
   const rerender = useReducer(() => ({}), {})[1];
   const [data, setData] = useState(false);
+  const [maintenance, setMaintenance] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   const columns = useMemo(() => columnsExercise, []);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -56,8 +58,10 @@ const Dashboard = () => {
     try {
       const response = await axios.get(apiUrl + "/exercise/all");
       setData(response.data.exercises);
+      setLoading(false);
     } catch (err) {
       console.log("error geting exercises" + err);
+      setMaintenance(true); // Might be better to check somewhere else
       setData(null);
     }
   };
@@ -70,9 +74,7 @@ const Dashboard = () => {
 
   const formatExamples = (exa) => {
     let formattedExamples = [];
-    exa.forEach((ex) =>
-      formattedExamples.push(createExample(ex))
-    );
+    exa.forEach((ex) => formattedExamples.push(createExample(ex)));
     return formattedExamples;
   };
 
@@ -112,6 +114,9 @@ const Dashboard = () => {
       url: apiUrl + "/exercise",
       headers: {
         "Content-Type": "application/json",
+        "Content-Length": 16,
+        Connection: "keep-alive",
+        "Access-Control-Allow-Origin": "*",
       },
       data: formData,
     };
@@ -130,15 +135,25 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    // Check maintenance of the API
+    axios
+      .get(apiUrl + "/")
+      .then((res) => {
+        setMaintenance(false);
+      })
+      .catch((err) => {});
+  }, [data]);
+
+  useEffect(() => {
     getData();
   }, []);
 
   return (
     <>
-      {data ? (
+      {!maintenance ? (
         <>
           <div className="flex h-full w-full px-1">
-            {data && <Table columns={columns} data={data} />}
+            <Table columns={columns} data={data} loading={loading}/>
           </div>
           <button
             type="button"

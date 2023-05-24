@@ -15,7 +15,7 @@ import { Tab } from "@headlessui/react";
 import Feedback from "./feedback";
 import { useAuth } from "../../Contexts/authContext";
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = process.env.REACT_APP_API_URL_TEST;
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");

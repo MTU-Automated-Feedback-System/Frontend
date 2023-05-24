@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -8,9 +8,66 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-const Table = ({ columns, data }) => {
-  const [sorting, setSorting] = useState([]);
+import ContentLoader from "react-content-loader";
+const RepeatableTableRows = props => {
+  const { rows = 10 } = props
+  const rowHeight = 60
 
+  return (
+    <ContentLoader viewBox={`0 0 1500 ${rowHeight * rows}`} {...props}>
+      {new Array(rows).fill(' ').map((el, index) => {
+        const contentVerticalPosition = contentHeight =>
+          rows > 1 ? contentHeight + rowHeight * index : contentHeight
+        return (
+          <Fragment key={index}>
+            <rect
+              x="20"
+              y={`${contentVerticalPosition(20)}`}
+              rx="4"
+              ry="4"
+              width="40"
+              height="20"
+            />
+            <rect
+              x="100"
+              y={`${contentVerticalPosition(20)}`}
+              rx="10"
+              ry="4"
+              width="600"
+              height="20"
+            />
+            <rect
+              x="750"
+              y={`${contentVerticalPosition(20)}`}
+              rx="10"
+              ry="4"
+              width="600"
+              height="20"
+            />
+            <rect
+              x="1450"
+              y={`${contentVerticalPosition(20)}`}
+              rx="4"
+              ry="4"
+              width="20"
+              height="20"
+            />
+            <rect
+              y={`${contentVerticalPosition(59)}`}
+              x="10"
+              ry="10"
+              width="1500"
+              height="1"
+            />
+          </Fragment>
+        )
+      })}
+    </ContentLoader>
+  )
+}
+
+const Table = ({ columns, data, loading }) => {
+  const [sorting, setSorting] = useState([]);
   const table = useReactTable({
     data,
     columns,
@@ -63,7 +120,14 @@ const Table = ({ columns, data }) => {
           ))}
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
-          {table
+          {loading ? (
+            <tr>
+              <td key="0" colSpan={columns.length}><RepeatableTableRows /></td>
+            </tr>
+            
+
+          ) : ( <>
+            {table
             .getRowModel()
             .rows.slice(0, 10)
             .map((row) => {
@@ -82,6 +146,10 @@ const Table = ({ columns, data }) => {
                 </tr>
               );
             })}
+          </>
+           
+          )}
+          
         </tbody>
         
       </table>

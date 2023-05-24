@@ -51,3 +51,9 @@ nav > div > a.active {
     transform:rotate(10deg);
   }
 }
+
+@layer components {
+  .exercise-sep {
+    @apply mx-auto my-4 h-1 w-[30rem] rounded border-0 bg-gray-300;
+  }
+}
