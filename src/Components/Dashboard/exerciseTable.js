@@ -132,8 +132,8 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
         </div>
 
         <div className=" m-2 h-full overflow-auto border-b border-gray-200 shadow sm:rounded-lg">
-          <table className=" min-w-full  divide-y text-left text-sm">
-            <thead className="bg-gray-100">
+          <table className=" min-w-full  divide-y text-left text-sm bg-blue-800/10">
+            <thead className="">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -169,8 +169,8 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
                 </tr>
               ))}
             </thead>
-            <tbody className="divide-y  divide-gray-200 bg-white">
-              {loading ? (
+            <tbody className="table-scroll divide-y  divide-gray-200 bg-white">
+              {!loading ? (
                 <tr>
                   <td key="0" colSpan={columns.length}>
                     <RepeatableTableRows />
