@@ -16,7 +16,7 @@ import { columnsExercise } from "./tableModels";
 import ContentLoader from "react-content-loader";
 
 const RepeatableTableRows = (props) => {
-  const { rows = 5 } = props;
+  const { rows = 20 } = props;
   const rowHeight = 60;
 
   return (
@@ -77,6 +77,8 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
 
   const columns = useMemo(() => columnsExercise, []);
 
+
+
   const table = useReactTable({
     data,
     columns,
@@ -92,8 +94,9 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
     debugTable: true,
   });
 
+ 
   return (
-    <div className="flex w-full flex-grow overflow-y-hidden">
+    <div className="flex max-w-[1600px] m-auto flex-grow overflow-y-hidden">
       <div className="flex w-full flex-col ">
         <div className="mx-2 flex flex-row justify-between gap-1">
           <div></div>
@@ -128,8 +131,8 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
           </button>
         </div>
 
-        <div className="table-container m-2 h-full border-b border-gray-200 shadow sm:rounded-lg">
-          <table className="divide-y text-left text-sm">
+        <div className=" m-2 h-full overflow-auto border-b border-gray-200 shadow sm:rounded-lg">
+          <table className=" min-w-full  divide-y text-left text-sm">
             <thead className="bg-gray-100">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
@@ -203,10 +206,10 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
           </table>
         </div>
 
-        <div className="m-2 flex flex-row justify-between gap-1">
+        <div className="mx-2 mt-2 flex flex-row justify-between gap-1">
           <div className="flex gap-1">
             <select
-              className="rounded-full pl-2 border border-gray-300 bg-blue-400 text-sm text-white focus:border-blue-500 focus:outline-blue-500 cursor-pointer"
+              className="rounded-full  px-4 border border-gray-300 bg-blue-400 text-sm text-white focus:border-blue-500 focus:outline-blue-500 cursor-pointer"
               value={table.getState().pagination.pageSize}
               onChange={(e) => {
                 table.setPageSize(Number(e.target.value));
@@ -245,6 +248,8 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
             
           </div>
         </div>
+
+
       </div>
     </div>
   );
