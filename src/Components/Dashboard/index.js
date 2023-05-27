@@ -5,8 +5,7 @@ import React, {
   useReducer,
   Fragment,
 } from "react";
-import { columnsExercise } from "./tableModels";
-import Table from "./table";
+import Table from "./exerciseTable";
 import axios from "axios";
 import { Dialog, Transition } from "@headlessui/react";
 import NewExercise from "./newExercise";
@@ -23,7 +22,6 @@ const Dashboard = () => {
   const [maintenance, setMaintenance] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const columns = useMemo(() => columnsExercise, []);
   const [isOpen, setIsOpen] = useState(false);
 
   const [title, setTitle] = useState();
@@ -152,33 +150,12 @@ const Dashboard = () => {
     <>
       {!maintenance ? (
         <>
-          <div className="flex h-full w-full px-1">
-            <Table columns={columns} data={data} loading={loading}/>
-          </div>
-          <button
-            type="button"
-            onClick={openModal}
-            disabled={auth.authStatus !== "signedIn"}
-            className={
-              "ml-3 mr-2 inline-flex w-fit rounded-md border-2 border-blue-200 bg-blue-50 px-4 py-2 font-medium text-blue-700 transition duration-200 hover:bg-blue-100 hover:shadow " +
-              (auth.authStatus !== "signedIn"
-                ? "cursor-not-allowed opacity-50"
-                : "")
-            }
-          >
-            New Exercise
-            <svg
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="ml-1 h-4 w-4"
-              viewBox="0 0 24 24"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7"></path>
-            </svg>
-          </button>
+          <Table
+            data={data}
+            loading={loading}
+            auth={auth}
+            openModal={openModal}
+          />
 
           <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className=" relative z-10" onClose={() => {}}>

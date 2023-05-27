@@ -18,3 +18,4 @@ export const columnsExercise = [
     footer: (info) => info.column.id,
   },
 ];
+
