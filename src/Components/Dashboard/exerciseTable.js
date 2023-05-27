@@ -77,8 +77,6 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
 
   const columns = useMemo(() => columnsExercise, []);
 
-
-
   const table = useReactTable({
     data,
     columns,
@@ -94,11 +92,10 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
     debugTable: true,
   });
 
- 
   return (
-    <div className="flex max-w-[1600px] m-auto flex-grow overflow-y-hidden">
-      <div className="flex w-full flex-col ">
-        <div className="mx-2 flex flex-row justify-between gap-1">
+    <div className="m-auto flex max-w-[1600px] flex-grow overflow-y-hidden">
+      <div className="flex flex-col w-full ">
+        <div className="flex flex-row justify-between gap-1 mx-2">
           <div></div>
           <div></div>
           <button
@@ -106,7 +103,7 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
             onClick={openModal}
             disabled={auth.authStatus !== "signedIn"}
             className={
-              "inline-flex w-fit items-center rounded-md border-2 border-blue-200 bg-blue-50 px-2.5 py-1.5 font-bold text-blue-700 transition duration-200 hover:bg-blue-100 hover:shadow " +
+              "inline-flex w-fit items-center rounded-md border-2 border-blue-200 bg-blue-50 px-2.5 py-1.5 font-bold text-blue-600 transition duration-200 hover:bg-blue-100 hover:shadow " +
               (auth.authStatus !== "signedIn"
                 ? "cursor-not-allowed opacity-50"
                 : "")
@@ -114,7 +111,7 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
           >
             <svg
               aria-hidden="true"
-              className="mr-1 h-3 w-3"
+              className="w-3 h-3 mr-1"
               height="12"
               width="12"
               viewBox="0 0 16 16"
@@ -131,8 +128,8 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
           </button>
         </div>
 
-        <div className=" m-2 h-full overflow-auto border-b border-gray-200 shadow sm:rounded-lg">
-          <table className=" min-w-full  divide-y text-left text-sm bg-blue-800/10">
+        <div className="h-full m-2 overflow-auto border-b border-gray-200 shadow sm:rounded-lg">
+          <table className="min-w-full text-sm text-left divide-y bg-blue-800/10">
             <thead className="">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
@@ -142,7 +139,7 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
                         key={header.id}
                         colSpan={header.colSpan}
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                        className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                       >
                         {header.isPlaceholder ? null : (
                           <div
@@ -169,7 +166,7 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
                 </tr>
               ))}
             </thead>
-            <tbody className="table-scroll divide-y  divide-gray-200 bg-white">
+            <tbody className="bg-white divide-y divide-gray-200 table-scroll">
               {!loading ? (
                 <tr>
                   <td key="0" colSpan={columns.length}>
@@ -188,7 +185,7 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
                             return (
                               <td
                                 key={cell.id}
-                                className="whitespace-nowrap px-6 py-4"
+                                className="px-6 py-4 whitespace-nowrap"
                               >
                                 {flexRender(
                                   cell.column.columnDef.cell,
@@ -206,10 +203,10 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
           </table>
         </div>
 
-        <div className="mx-2 mt-2 flex flex-row justify-between gap-1">
+        <div className="flex flex-row justify-between gap-1 mx-2 mt-2">
           <div className="flex gap-1">
             <select
-              className="rounded-full  px-4 border border-gray-300 bg-blue-400 text-sm text-white focus:border-blue-500 focus:outline-blue-500 cursor-pointer"
+              className="px-4 text-sm font-semibold text-white bg-blue-400 border border-gray-300 rounded-full cursor-pointer focus:border-blue-500 focus:outline-blue-500"
               value={table.getState().pagination.pageSize}
               onChange={(e) => {
                 table.setPageSize(Number(e.target.value));
@@ -226,30 +223,35 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
           <div> </div>
           <div className="flex gap-1">
             <button
-              className={"rounded-full bg-blue-400 px-4 py-2 text-sm font-semibold text-white shadow-sm "+(!table.getCanPreviousPage() ? "cursor-not-allowed opacity-50" : "")}
+              className={
+                "rounded-full bg-blue-400 px-4 py-2 text-sm font-semibold text-white shadow-sm " +
+                (!table.getCanPreviousPage()
+                  ? "cursor-not-allowed opacity-50"
+                  : "")
+              }
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
               Prev
             </button>
-            <span className="mx-2 flex items-center font-medium text-blue-500 gap-1 text-sm">
+            <span className="flex items-center gap-1 mx-2 text-sm font-semibold text-blue-500 ">
               <strong>
                 {table.getState().pagination.pageIndex + 1} of{" "}
                 {table.getPageCount()}
               </strong>
             </span>
             <button
-              className={"rounded-full bg-blue-400 px-4 py-2 text-sm font-semibold text-white shadow-sm " +(!table.getCanNextPage() ? "cursor-not-allowed opacity-50" : "")}
+              className={
+                "rounded-full bg-blue-400 px-4 py-2 text-sm font-semibold text-white shadow-sm " +
+                (!table.getCanNextPage() ? "cursor-not-allowed opacity-50" : "")
+              }
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
               Next
             </button>
-            
           </div>
         </div>
-
-
       </div>
     </div>
   );
