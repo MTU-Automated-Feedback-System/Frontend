@@ -19,7 +19,7 @@ const Description = ({ exercise, submissions, updateCurrentSubmission }) => {
   
   return (
     <Tab.Group>
-      <Tab.List className="flex h-10 space-x-1 rounded-xl bg-blue-900/20 p-1 ">
+      <Tab.List className="flex h-10 p-1 space-x-1 rounded-xl bg-blue-900/20 ">
         {Object.keys(categories).map((category) => (
           <Tab
             key={category}
@@ -37,7 +37,7 @@ const Description = ({ exercise, submissions, updateCurrentSubmission }) => {
           </Tab>
         ))}
       </Tab.List>
-      <Tab.Panels className="mt-2 h-full space-x-1 overflow-y-auto rounded-xl bg-blue-800/10 p-1 font-medium">
+      <Tab.Panels className="h-full p-1 mt-1 overflow-y-auto font-medium rounded-xl bg-blue-800/10">
         <Tab.Panel>
           {exercise && (
             <>
@@ -57,13 +57,13 @@ const Description = ({ exercise, submissions, updateCurrentSubmission }) => {
                   <li key={index}>
                     {Object.entries(item).map(([key, value]) => (
                       <>
-                        <div className="pl-3 pt-3 text-sm font-bold leading-5 text-blue-900">
+                        <div className="pt-3 pl-3 text-sm font-bold leading-5 text-blue-900">
                           {key}:
                         </div>
-                        <div className="m-2 rounded-xl bg-blue-400/20 p-2">
+                        <div className="p-2 m-2 rounded-xl bg-blue-400/20">
                           <div
                             dangerouslySetInnerHTML={{ __html: value }}
-                            className="overflow-auto px-2 font-mono"
+                            className="px-2 overflow-auto font-mono"
                           />
                         </div>
                       </>

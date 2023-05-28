@@ -234,7 +234,7 @@ const Exercise = () => {
   }, [auth.authStatus]);
 
   return (
-    <Split className="flex flex-row flex-grow w-full px-2" sizes={[30, 70]}>
+    <Split className="flex flex-row flex-grow w-full px-2 overflow-y-hidden" sizes={[30, 70]} minSize={[200,200]}>
       
       <div className="flex flex-col h-full pr-1">
         <Description
@@ -246,7 +246,7 @@ const Exercise = () => {
 
       <div className="flex flex-col h-full pl-1">
         <div className="relative flex h-full"> 
-        <Split direction="vertical" className="w-full" sizes={[60, 40]} >
+        <Split direction="vertical" className="w-full" sizes={[60, 40]} minSize={[200,200]}>
           <div className="pb-1">
             <CodeEditor
               code={code}
@@ -312,7 +312,7 @@ const Exercise = () => {
                 </div>
               </div>
 
-              <Tab.Panels className="h-full p-1 mt-2 space-x-1 overflow-y-auto rounded-xl bg-blue-800/10">
+              <Tab.Panels className="h-full p-1 mt-1 space-x-1 overflow-y-auto rounded-xl bg-blue-800/10">
                 <Tab.Panel>
                   <OutputWindow
                     outputDetails={outputDetails}
@@ -338,8 +338,8 @@ const Exercise = () => {
                   </div>
 
                   {exercise && (
-                    <div className="mx-2 mt-3 rounded-md bg-[#2a4555e1] text-sm font-normal text-white">
-                      <pre className="px-2 py-1 text-sm font-normal text-white ">
+                    <div className="mx-2 mt-3 rounded-md bg-[#2a4555e1] text-sm font-normal text-white overflow-auto ">
+                      <pre className="p-2 text-sm font-normal text-white ">
                         {exercise &&
                           Buffer.from(
                             exercise?.test_cases[caseIndex].expected_result,
