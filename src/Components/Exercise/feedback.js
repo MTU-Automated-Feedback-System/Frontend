@@ -9,7 +9,7 @@ const FeedbackDiscolsure = ({ item }) => {
       <Disclosure as="div" className="mt-2">
         {({ open }) => (
           <>
-            <Disclosure.Button className="flex w-full justify-between rounded-lg bg-blue-100 px-4 py-2 text-left text-sm font-medium text-blue-900 transition duration-200 hover:bg-blue-300">
+            <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-blue-900 transition duration-200 bg-blue-100 rounded-lg hover:bg-blue-300">
               <span>Source code</span>
               <ChevronUpIcon
                 className={`${
@@ -18,8 +18,8 @@ const FeedbackDiscolsure = ({ item }) => {
               />
             </Disclosure.Button>
             <Disclosure.Panel className="px-4 pt-2 pb-2 text-sm text-gray-500">
-              <div className="rounded-md bg-[#2a4555e1] text-sm font-normal text-white">
-                <pre className="px-2 py-1 text-sm font-normal text-white ">
+              <div className="rounded-md bg-[#2a4555e1] text-sm font-normal text-white overflow-auto">
+                <pre className="p-2 text-sm font-normal text-white ">
                   {Buffer.from(item?.source_code, "base64").toString("utf-8")}
                 </pre>
               </div>
@@ -43,7 +43,7 @@ const Feedback = ({ submissions }) => {
         submissions.map((item, index) =>
           item.submission_type === "feedback" ? (
             <>
-              <div key={index} className="m-1 mt-4 rounded-xl  bg-blue-200 p-2">
+              <div key={index} className="p-2 m-1 mt-4 bg-blue-200 rounded-xl">
                 <div className="flex flex-row">
                   <div className={"mx-1 mt-2 font-semibold text-blue-900"}>
                     {item.feedback?.type === "case"
@@ -56,7 +56,7 @@ const Feedback = ({ submissions }) => {
                   </div>
                 </div>
 
-                <div className="mt-1 max-h-full break-words rounded-md bg-orange-200 px-2 py-1 text-sm font-medium text-amber-800 transition duration-200">
+                <div className="max-h-full p-2 mt-1 text-sm font-medium break-words transition duration-200 bg-orange-200 rounded-md text-amber-800">
                   {item?.feedback?.message}
                 </div>
                 <FeedbackDiscolsure item={item}></FeedbackDiscolsure>

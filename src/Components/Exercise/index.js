@@ -14,6 +14,7 @@ import Description from "./description";
 import { Tab } from "@headlessui/react";
 import Feedback from "./feedback";
 import { useAuth } from "../../Contexts/authContext";
+import Split from "react-split";
 
 const apiUrl = process.env.REACT_APP_API_URL_TEST;
 
@@ -217,7 +218,7 @@ const Exercise = () => {
         let path =
           auth.authStatus === "signedIn"
             ? "/submissions/" + auth?.attrInfo[3]?.Value + "/" + id
-            : "/submission/all/" + id ;
+            : "/submission/all/" + id;
         const response = await axios.get(apiUrl + path);
         // Loop through submission and sort them by date
         let sortedSub = response.data.submissions.sort(
@@ -233,121 +234,127 @@ const Exercise = () => {
   }, [auth.authStatus]);
 
   return (
-    <div className="flex flex-grow w-full px-1 overflow-y-hidden">
-      <div className="flex flex-col w-1/4 h-full px-2">
+    <Split className="flex flex-row flex-grow w-full px-2 overflow-y-hidden" sizes={[30, 70]} minSize={[200,200]}>
+      
+      <div className="flex flex-col h-full pr-1">
         <Description
           exercise={exercise}
           submissions={submissions}
           updateCurrentSubmission={updateCurrentSubmission}
         />
       </div>
-      <div className="flex flex-col w-3/4 pr-2">
-        <div className="h-3/5">
-          <CodeEditor
-            code={code}
-            onChange={onChange}
-            language={language?.value}
-            theme={theme?.value}
-          />
-        </div>
 
-        <div className="flex flex-col h-2/5">
-          <Tab.Group>
-            <div className="flex flex-row mt-2">
-              <Tab.List className="flex w-1/2 h-10 p-1 mr-1 space-x-1 rounded-xl bg-blue-900/20">
-                {Object.keys(categories).map((category) => (
-                  <Tab
-                    key={category}
-                    className={({ selected }) =>
-                      classNames(
-                        "w-full rounded-lg py-1.5 text-sm font-medium leading-5 text-blue-700",
-                        "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2",
-                        selected
-                          ? "bg-white shadow"
-                          : "text-blue-100 hover:bg-white/[0.12] hover:text-blue-500"
-                      )
-                    }
+      <div className="flex flex-col h-full pl-1">
+        <div className="relative flex h-full"> 
+        <Split direction="vertical" className="w-full" sizes={[60, 40]} minSize={[200,200]}>
+          <div className="pb-1">
+            <CodeEditor
+              code={code}
+              onChange={onChange}
+              language={language?.value}
+              theme={theme?.value}
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <Tab.Group>
+              <div className="flex flex-row pt-1">
+                <Tab.List className="flex w-1/2 h-10 p-1 mr-1 space-x-1 rounded-xl bg-blue-900/20">
+                  {Object.keys(categories).map((category) => (
+                    <Tab
+                      key={category}
+                      className={({ selected }) =>
+                        classNames(
+                          "w-full rounded-lg py-1.5 text-sm font-medium leading-5 text-blue-700",
+                          "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2",
+                          selected
+                            ? "bg-white shadow"
+                            : "text-blue-100 hover:bg-white/[0.12] hover:text-blue-500"
+                        )
+                      }
+                    >
+                      {category}
+                    </Tab>
+                  ))}
+                </Tab.List>
+                <div className="w-1/2 ml-1">
+                  <button
+                    onClick={() => handleCompile("run")}
+                    disabled={!code}
+                    className={classnames(
+                      "flex-shrink-0 rounded-md border-2 border-blue-200 bg-blue-50 px-4 py-2 transition hover:bg-blue-100",
+                      "mr-2 font-medium text-blue-700 duration-200 hover:shadow",
+                      !code ? "cursor-not-allowed opacity-50" : ""
+                    )}
+                    id="run"
                   >
-                    {category}
-                  </Tab>
-                ))}
-              </Tab.List>
-              <div className="w-1/2 ml-1">
-                <button
-                  onClick={() => handleCompile("run")}
-                  disabled={!code}
-                  className={classnames(
-                    "flex-shrink-0 rounded-md border-2 border-blue-200 bg-blue-50 px-4 py-2 transition hover:bg-blue-100",
-                    "mr-2 font-medium text-blue-700 duration-200 hover:shadow",
-                    !code ? "cursor-not-allowed opacity-50" : ""
-                  )}
-                  id="run"
-                >
-                  {processing ? "Processing" : "Run"}
-                </button>
-                <button
-                  onClick={() => handleCompile("feedback")}
-                  disabled={
-                    !outputDetails ||
-                    outputDetails?.compiled_status === "error" ||
-                    auth.authStatus !== "signedIn"
-                  }
-                  className={classnames(
-                    "flex-shrink-0 rounded-md border-2 border-blue-200 bg-blue-50 px-4 py-2 transition hover:bg-blue-100",
-                    "font-medium text-blue-700 duration-200 hover:shadow",
-                    !outputDetails ||
+                    {processing ? "Processing" : "Run"}
+                  </button>
+                  <button
+                    onClick={() => handleCompile("feedback")}
+                    disabled={
+                      !outputDetails ||
                       outputDetails?.compiled_status === "error" ||
                       auth.authStatus !== "signedIn"
-                      ? "cursor-not-allowed opacity-50"
-                      : ""
-                  )}
-                >
-                  {processing ? "Processing" : "General Feedback"}
-                </button>
-              </div>
-            </div>
-
-            <Tab.Panels className="h-full p-1 mt-2 space-x-1 overflow-y-auto rounded-xl bg-blue-800/10">
-              <Tab.Panel>
-                <OutputWindow
-                  outputDetails={outputDetails}
-                  testCases={exercise?.test_cases}
-                  handleCompile={handleCompile}
-                  processing={processing}
-                />
-              </Tab.Panel>
-              <Tab.Panel>
-                <Feedback submissions={submissions}></Feedback>
-              </Tab.Panel>
-              <Tab.Panel>
-                <div className="flex flex-row mt-4 ml-2 gap-x-4">
-                  {exercise &&
-                    exercise?.test_cases.map((expected_result, index) => (
-                      <button
-                        className="flex-shrink-0 px-3 py-1 font-medium text-blue-700 transition duration-200 bg-blue-200 rounded-md hover:bg-blue-100 "
-                        onClick={() => setCaseIndex(index)}
-                      >
-                        Case {index + 1}
-                      </button>
-                    ))}
+                    }
+                    className={classnames(
+                      "flex-shrink-0 rounded-md border-2 border-blue-200 bg-blue-50 px-4 py-2 transition hover:bg-blue-100",
+                      "font-medium text-blue-700 duration-200 hover:shadow",
+                      !outputDetails ||
+                        outputDetails?.compiled_status === "error" ||
+                        auth.authStatus !== "signedIn"
+                        ? "cursor-not-allowed opacity-50"
+                        : ""
+                    )}
+                  >
+                    {processing ? "Processing" : "General Feedback"}
+                  </button>
                 </div>
+              </div>
 
-                {exercise && (
-                  <div className="mx-2 mt-3 rounded-md bg-[#2a4555e1] text-sm font-normal text-white">
-                    <pre className="px-2 py-1 text-sm font-normal text-white ">
-                      {exercise &&
-                        Buffer.from(
-                          exercise?.test_cases[caseIndex].expected_result,
-                          "base64"
-                        ).toString("utf-8")}
-                    </pre>
+              <Tab.Panels className="h-full p-1 mt-1 space-x-1 overflow-y-auto rounded-xl bg-blue-800/10">
+                <Tab.Panel>
+                  <OutputWindow
+                    outputDetails={outputDetails}
+                    testCases={exercise?.test_cases}
+                    handleCompile={handleCompile}
+                    processing={processing}
+                  />
+                </Tab.Panel>
+                <Tab.Panel>
+                  <Feedback submissions={submissions}></Feedback>
+                </Tab.Panel>
+                <Tab.Panel>
+                  <div className="flex flex-row mt-4 ml-2 gap-x-4">
+                    {exercise &&
+                      exercise?.test_cases.map((expected_result, index) => (
+                        <button
+                          className="flex-shrink-0 px-3 py-1 font-medium text-blue-700 transition duration-200 bg-blue-200 rounded-md hover:bg-blue-100 "
+                          onClick={() => setCaseIndex(index)}
+                        >
+                          Case {index + 1}
+                        </button>
+                      ))}
                   </div>
-                )}
-              </Tab.Panel>
-            </Tab.Panels>
-          </Tab.Group>
-        </div>
 
+                  {exercise && (
+                    <div className="mx-2 mt-3 rounded-md bg-[#2a4555e1] text-sm font-normal text-white overflow-auto ">
+                      <pre className="p-2 text-sm font-normal text-white ">
+                        {exercise &&
+                          Buffer.from(
+                            exercise?.test_cases[caseIndex].expected_result,
+                            "base64"
+                          ).toString("utf-8")}
+                      </pre>
+                    </div>
+                  )}
+                </Tab.Panel>
+              </Tab.Panels>
+            </Tab.Group>
+          </div>
+          
+        </Split>
+        </div>
         <ToastContainer
           position="top-right"
           autoClose={2000}
@@ -360,7 +367,7 @@ const Exercise = () => {
           pauseOnHover
         />
       </div>
-    </div>
+    </Split>
   );
 };
 export default Exercise;

@@ -19,15 +19,15 @@ const Nav = () => {
 
   return (
     <>
-      <nav className="h-15 z-nav-1 relative flex w-full shrink-0 flex-row items-center p-3 text-gray-600">
+      <nav className="relative flex flex-row items-center w-full p-2 text-gray-600 h-15 z-nav-1 shrink-0">
         <Link
-          className="title-font mb-4 flex items-center font-medium text-gray-900 md:mb-0"
+          className="flex items-center mb-4 font-medium text-gray-900 title-font md:mb-0"
           to={"/"}
           rel="noopener noreferrer"
         >
           <img
             src={chess}
-            className="h-10 w-10 rounded-md"
+            className="w-10 h-10 rounded-md"
             alt="A chess piece."
           />
           <span className="ml-3 text-xl">AFS</span>
@@ -55,7 +55,7 @@ const Nav = () => {
               ? ""
               : openModal
           }
-          className="mt-4 inline-flex items-center rounded-lg border-0 bg-gray-100 py-1 px-3 text-base font-medium hover:bg-gray-200 focus:outline-none md:mt-0"
+          className="inline-flex items-center px-3 py-1 mt-4 text-base font-medium bg-gray-100 border-0 rounded-lg hover:bg-gray-200 focus:outline-none md:mt-0"
         >
           {auth.authStatus === "signedIn"
             ? "Sign Out"
@@ -68,7 +68,7 @@ const Nav = () => {
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="2"
-            className="ml-1 h-4 w-4"
+            className="w-4 h-4 ml-1"
             viewBox="0 0 24 24"
           >
             <path d="M5 12h14M12 5l7 7-7 7"></path>
@@ -91,7 +91,7 @@ const Nav = () => {
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <div className="flex items-center justify-center min-h-full p-4 text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -101,10 +101,10 @@ const Nav = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                   <Dialog.Title
                     as="h3"
-                    className="pl-7 text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-medium leading-6 text-gray-900 pl-7"
                   >
                     Sign in on AFS
                   </Dialog.Title>
