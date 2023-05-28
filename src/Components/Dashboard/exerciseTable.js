@@ -167,7 +167,7 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
               ))}
             </thead>
             <tbody className="bg-white divide-y divide-gray-200 table-scroll">
-              {!loading ? (
+              {loading ? (
                 <tr>
                   <td key="0" colSpan={columns.length}>
                     <RepeatableTableRows />
@@ -206,7 +206,7 @@ const ExerciseTable = ({ data, loading, openModal, auth }) => {
         <div className="flex flex-row justify-between gap-1 mx-2 mt-2">
           <div className="flex gap-1">
             <select
-              className="px-4 text-sm font-semibold text-white bg-blue-400 border border-gray-300 rounded-full cursor-pointer focus:border-blue-500 focus:outline-blue-500"
+              className="pl-2 text-sm font-semibold text-white bg-blue-400 border border-gray-300 rounded-full cursor-pointer focus:border-blue-500 focus:outline-blue-500"
               value={table.getState().pagination.pageSize}
               onChange={(e) => {
                 table.setPageSize(Number(e.target.value));

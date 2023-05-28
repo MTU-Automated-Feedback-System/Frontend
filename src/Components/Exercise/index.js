@@ -53,7 +53,7 @@ const Exercise = () => {
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
-  const [theme, setTheme] = useState("vs-dark");
+  const [theme, setTheme] = useState("oceanic-next");
   const [language, setLanguage] = useState(languageOptions[0]);
   const [loading, setLoading] = useState(true);
   const [exercise, setExercise] = useState(false);
@@ -233,15 +233,15 @@ const Exercise = () => {
   }, [auth.authStatus]);
 
   return (
-    <div className="flex w-full flex-grow overflow-y-hidden px-1">
-      <div className="flex h-full w-1/4 flex-col px-2">
+    <div className="flex flex-grow w-full px-1 overflow-y-hidden">
+      <div className="flex flex-col w-1/4 h-full px-2">
         <Description
           exercise={exercise}
           submissions={submissions}
           updateCurrentSubmission={updateCurrentSubmission}
         />
       </div>
-      <div className="flex w-3/4 flex-col pr-2">
+      <div className="flex flex-col w-3/4 pr-2">
         <div className="h-3/5">
           <CodeEditor
             code={code}
@@ -251,10 +251,10 @@ const Exercise = () => {
           />
         </div>
 
-        <div className="flex h-2/5 flex-col">
+        <div className="flex flex-col h-2/5">
           <Tab.Group>
-            <div className="mt-2 flex flex-row">
-              <Tab.List className="mr-1 flex h-10 w-1/2 space-x-1 rounded-xl bg-blue-900/20 p-1">
+            <div className="flex flex-row mt-2">
+              <Tab.List className="flex w-1/2 h-10 p-1 mr-1 space-x-1 rounded-xl bg-blue-900/20">
                 {Object.keys(categories).map((category) => (
                   <Tab
                     key={category}
@@ -272,7 +272,7 @@ const Exercise = () => {
                   </Tab>
                 ))}
               </Tab.List>
-              <div className="ml-1 w-1/2">
+              <div className="w-1/2 ml-1">
                 <button
                   onClick={() => handleCompile("run")}
                   disabled={!code}
@@ -307,7 +307,7 @@ const Exercise = () => {
               </div>
             </div>
 
-            <Tab.Panels className="mt-2 h-full space-x-1 overflow-y-auto rounded-xl bg-blue-800/10 p-1">
+            <Tab.Panels className="h-full p-1 mt-2 space-x-1 overflow-y-auto rounded-xl bg-blue-800/10">
               <Tab.Panel>
                 <OutputWindow
                   outputDetails={outputDetails}
@@ -320,12 +320,11 @@ const Exercise = () => {
                 <Feedback submissions={submissions}></Feedback>
               </Tab.Panel>
               <Tab.Panel>
-                <div className="ml-2 mt-4 flex flex-row gap-x-4">
+                <div className="flex flex-row mt-4 ml-2 gap-x-4">
                   {exercise &&
                     exercise?.test_cases.map((expected_result, index) => (
                       <button
-                        className="flex-shrink-0 rounded-md bg-blue-200 px-3 py-1 font-medium text-blue-700
-                      transition duration-200 hover:bg-blue-100 "
+                        className="flex-shrink-0 px-3 py-1 font-medium text-blue-700 transition duration-200 bg-blue-200 rounded-md hover:bg-blue-100 "
                         onClick={() => setCaseIndex(index)}
                       >
                         Case {index + 1}
