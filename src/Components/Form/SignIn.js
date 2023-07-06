@@ -28,11 +28,11 @@ export function SignIn({ closeModal }) {
   };
 
   return (
-    <div className="space-y-6 px-6 pb-4 sm:pb-6 lg:px-8 xl:pb-8">
+    <div className="px-6 pb-4 space-y-6 sm:pb-6 lg:px-8 xl:pb-8">
       <div className="pt-6">
         <label
           for="email"
-          className="mb-2 block text-sm font-medium text-gray-900 "
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           Your email
         </label>
@@ -50,7 +50,7 @@ export function SignIn({ closeModal }) {
       <div>
         <label
           for="password"
-          className="mb-2 block text-sm font-medium text-gray-900 "
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           Your password
         </label>
@@ -67,12 +67,12 @@ export function SignIn({ closeModal }) {
       </div>
       {/* <div className="flex justify-between">
         <div className="flex items-start">
-          <div className="flex h-5 items-center">
+          <div className="flex items-center h-5">
             <input
               id="remember"
               aria-describedby="remember"
               type="checkbox"
-              className="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300  "
+              className="w-4 h-4 border border-gray-300 rounded focus:ring-3 bg-gray-50 focus:ring-blue-300 "
               required=""
             />
           </div>
@@ -93,13 +93,13 @@ export function SignIn({ closeModal }) {
         </a>
       </div> */}
       <button
-        className="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+        className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
         onClick={executeSignIn}
       >
         Login to your account
       </button>
       <button
-        className="inline-flex w-full justify-center rounded-md border border-transparent bg-orange-100 px-4 py-2 text-sm font-medium text-orange-900 hover:bg-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+        className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-orange-900 bg-orange-100 border border-transparent rounded-md hover:bg-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
         onClick={executeSignUp}
       >
         Sign Up

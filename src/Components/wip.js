@@ -3,24 +3,26 @@ import monkey from "../Assets/monkey.gif";
 
 const Wip = () => {
   return (
-    <div className="flex flex-col  h-full w-full">
-        <div className="flex-grow"></div>
-      <h1 className=" text-3xl text-center mb-4 font-normal text-gray-700 underline decoration-orange-300 ">Work In Progress</h1>
-      <div className="overflow-hidden px-5">
+    <div className="flex flex-col w-full h-full">
+      <div className="flex-grow" />
+      <h1 className="mb-4 text-3xl font-normal text-center text-gray-700 underline decoration-orange-300">
+        Work In Progress
+      </h1>
+      <div className="px-5 overflow-hidden">
         <img
           src={monkey}
-          className="rounded-lg mb-4 border shadow-lg m-auto"
+          className="m-auto mb-4 border rounded-lg shadow-lg"
           alt="Monkey typing on typewriter"
           loading="lazy"
         />
       </div>
-      <p className=" mb-4 text-center italic">
+      <p className="mb-4 italic text-center ">
         Credit to Amanda Cassingham-Bardwell{" "}
         <a href="https://dribbble.com/shots/4055310-Monkey-on-Typewriter">
           @dribbble
         </a>
       </p>
-       <div className="flex-grow"></div>
+      <div className="flex-grow" />
     </div>
   );
 };
