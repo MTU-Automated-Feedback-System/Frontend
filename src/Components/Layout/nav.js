@@ -1,9 +1,9 @@
 import React, { Fragment, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import chess from "../Assets/chess.png";
+import chess from "../../Assets/chess.png";
 import { Dialog, Transition } from "@headlessui/react";
-import { SignIn } from "../Components/SignIn/SignIn";
-import { useAuth } from "../Contexts/authContext";
+import { SignIn } from "../../Components/Form/SignIn";
+import { useAuth } from "../../Contexts/authContext";
 
 const Nav = () => {
   const auth = useAuth();

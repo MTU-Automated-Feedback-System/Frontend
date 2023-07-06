@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Dashboard from "./Components/Dashboard";
-import Exercise from "./Components/Exercise";
-import Nav from "./Containers/nav";
+import Dashboard from "./Pages/Dashboard";
+import Exercise from "./Pages/Exercise";
+import Nav from "./Components/Layout/nav";
+import Footer from "./Components/Layout/footer";
 import { useAuth } from "./Hooks/useAuthTest";
 import Wip from "./Components/wip";
 
@@ -28,8 +29,8 @@ const App = () => {
     });
   }, []);
 
-  const auth = useAuth();
-  
+  // const auth = useAuth();
+
   return (
     <BrowserRouter>
       <Nav />
@@ -39,6 +40,7 @@ const App = () => {
         <Route path="/exercise/:id" element={<Exercise />} />
         <Route path="/submissions" element={<Wip />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 };
